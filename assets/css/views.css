@@ -38,7 +38,7 @@
 .featured-section { background: #fbf8f1; }
 .featured-action { margin-top: 35px; text-align: center; }
 .menu-view, .orders-view { min-height: calc(100vh - 78px); }
-.menu-view .menu-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.menu-view .menu-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .menu-view .dish-image { height: 155px; }
 .menu-pagination { display: flex; justify-content: center; gap: 8px; margin-top: 38px; }
 .menu-pagination button { width: 38px; height: 38px; border: 1px solid #e7e5dc; border-radius: 50%; background: #fff; color: #476f5c; font-size: 12px; font-weight: 700; cursor: pointer; }

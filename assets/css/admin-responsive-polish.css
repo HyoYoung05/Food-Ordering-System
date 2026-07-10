@@ -1,0 +1,95 @@
+/* Final cross-device layout rules loaded after all operations portal styles. */
+html { overflow-x: clip; }
+body { min-width: 280px; }
+.portal, .portal main, .portal-view { width: auto; max-width: 100%; }
+.portal main { min-height: 100vh; }
+.portal header > div:first-child { min-width: 0; }
+.portal header h1 { overflow-wrap: anywhere; }
+.orders-panel, .products-panel { max-width: 100%; }
+.table-wrap, .products-table-wrap { max-width: 100%; overflow-x: auto; scrollbar-width: thin; }
+.product-modal, .customer-detail-modal { overscroll-behavior: contain; }
+
+@media (min-width: 1500px) {
+  .portal main { padding-inline: max(5vw,calc((100vw - 1500px)/2)); }
+}
+
+@media (max-width: 1180px) {
+  .portal main { padding: 34px 25px; }
+  .stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .staff-mode .stats { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .orders-panel, .orders-panel .table-wrap { overflow-x: auto; overflow-y: visible; }
+  .orders-panel table { min-width: 850px; }
+  .products-table { min-width: 850px; }
+  .product-heading-actions { min-width: min(100%,430px); }
+}
+
+@media (max-width: 900px) {
+  .sidebar { width: 78px; padding: 24px 10px; }
+  .sidebar .brand { justify-content: center; font-size: 0; }
+  .sidebar .brand > span { font-size: 18px; }
+  .sidebar nav button, .sidebar nav a { justify-content: center; font-size: 0; }
+  .sidebar nav i { font-size: 17px; }
+  .portal-label, .staff-card div, .logout { display: none; }
+  .staff-card { display: block; }
+  .portal main { margin-left: 78px; }
+  .revenue-heading { align-items: stretch; flex-direction: column; }
+  .revenue-actions { width: 100%; justify-content: space-between; }
+  .products-panel .panel-heading { align-items: stretch; flex-direction: column; }
+  .product-heading-actions { width: 100%; min-width: 0; }
+  .product-heading-actions .search { flex: 1; min-width: 0; }
+}
+
+@media (max-width: 720px) {
+  .login-screen { display: block; min-height: 100dvh; }
+  .login-art { display: none; }
+  .login-panel { min-height: 100dvh; padding: 28px 18px; }
+  .login-panel form { width: min(100%,460px); }
+  .mobile-brand { display: flex; margin-bottom: 30px; }
+  .login-panel h2 { font-size: clamp(31px,9vw,40px); }
+  .sidebar { width: 66px; padding-inline: 7px; }
+  .sidebar .brand > span { width: 34px; height: 34px; }
+  .portal main { margin-left: 66px; padding: 22px 12px; }
+  .portal header { align-items: flex-start; gap: 10px; }
+  .portal header h1 { font-size: 25px; }
+  .stats, .staff-mode .stats { grid-template-columns: 1fr; }
+  .revenue-panel { padding: 17px 11px; }
+  .revenue-actions { align-items: stretch; flex-direction: column; }
+  .period-tabs { width: 100%; }.period-tabs button { flex: 1; }
+  .download-revenue { width: 100%; }
+  .revenue-summary { grid-template-columns: 1fr; }
+  .panel-heading { display: block; padding: 17px 13px; }
+  .panel-heading .search { width: 100%; margin-top: 13px; display: flex; }
+  .panel-heading .search input { width: 100%; }
+  .product-heading-actions { align-items: stretch; flex-direction: column; }
+  .add-product { width: 100%; }
+  .filter-tabs { overflow-x: auto; padding-inline: 13px; }
+  .product-modal { width: calc(100vw - 18px); padding: 25px 17px; }
+  .product-form-row, .product-form-three { grid-template-columns: 1fr; }
+  .save-product { width: 100%; }
+  .customer-detail-modal { width: calc(100vw - 18px); padding: 25px 15px; }
+  .detail-contact, .detail-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .detail-columns { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 440px) {
+  .sidebar { width: 58px; padding-inline: 5px; }
+  .sidebar nav button, .sidebar nav a { padding-inline: 7px; }
+  .portal main { margin-left: 58px; padding: 18px 7px; }
+  .portal header { display: block; }
+  .live-indicator { display: inline-block; margin-top: 7px; }
+  .portal header h1 { font-size: 22px; }
+  .stats article { padding: 14px 12px; }
+  .revenue-panel, .dashboard-note { border-radius: 11px; }
+  .revenue-chart svg { min-width: 520px; }
+  .detail-contact, .detail-grid { grid-template-columns: 1fr; }
+  .detail-order-heading { align-items: flex-start; gap: 10px; flex-direction: column; }
+  .badge-options label { margin-right: 3px; }
+  .badge-options span { padding-inline: 10px; }
+}
+
+@media (max-height: 650px) and (orientation: landscape) {
+  .login-panel { padding-block: 14px; }
+  .mobile-brand { margin-bottom: 12px; }
+  .login-panel label { margin-block: 8px; }
+  .product-modal, .customer-detail-modal { top: 8px; max-height: calc(100dvh - 16px); transform: translateX(-50%); }
+}

@@ -27,7 +27,7 @@ window.MenuModel = {
   ],
 
   categories() {
-    return ['All', ...new Set(this.items.map(item => item.category))];
+    return ['All', 'New', 'Popular', 'Bestseller', ...new Set(this.items.map(item => item.category))];
   },
 
   find(id) {
@@ -35,8 +35,9 @@ window.MenuModel = {
   },
 
   filter(category = 'All', query = '') {
+    const badgeFilters = {New: 'NEW', Popular: 'POPULAR', Bestseller: 'BESTSELLER'};
     return this.items.filter(item =>
-      (category === 'All' || item.category === category) &&
+      (category === 'All' || (badgeFilters[category] ? item.badge === badgeFilters[category] : item.category === category)) &&
       `${item.name} ${item.desc}`.toLowerCase().includes(query.toLowerCase())
     );
   }

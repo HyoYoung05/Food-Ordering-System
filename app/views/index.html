@@ -12,6 +12,9 @@
   <link rel="stylesheet" href="assets/css/views.css">
   <link rel="stylesheet" href="assets/css/password-toggle.css">
   <link rel="stylesheet" href="assets/css/responsive.css">
+  <link rel="stylesheet" href="assets/css/product-images.css">
+  <link rel="stylesheet" href="assets/css/hero-redesign.css">
+  <link rel="stylesheet" href="assets/css/customer-responsive-polish.css">
 </head>
 <body>
   <header class="topbar">
@@ -42,32 +45,32 @@
 
   <main>
     <div class="page-view home-view" data-view="home">
-    <section class="hero" id="home">
+    <section class="hero hero-new" id="home">
       <div class="hero-copy reveal">
-        <div class="eyebrow"><span>✦</span> Freshly made, thoughtfully delivered</div>
-        <h1>Cravings, <em>delivered.</em></h1>
-        <p>From our kitchen to your table — discover comfort food made with honest ingredients and a little extra love.</p>
+        <span class="hero-kicker"><i></i> Open today · 10:00 AM–10:00 PM</span>
+        <h1>Food worth<br><em>slowing down</em><br>for.</h1>
+        <p>Comforting favorites, quality ingredients, and thoughtful cooking—delivered fresh from our kitchen to your door.</p>
         <div class="hero-actions">
-          <a class="primary-btn" href="#menu">Explore the menu <span>→</span></a>
-          <a class="text-link" href="#orders">Track an order</a>
+          <a class="primary-btn" href="#menu">Order something good <span>→</span></a>
+          <a class="hero-order-link" href="#orders"><b>◎</b><span>Already ordered?<small>Track your meal</small></span></a>
         </div>
-        <div class="trust-row">
-          <div class="avatar-stack"><span>AM</span><span>JL</span><span>RK</span></div>
-          <div><strong>4.9 <span class="stars">★★★★★</span></strong><small>Loved by 2,000+ foodies</small></div>
+        <div class="hero-proof">
+          <div><strong>4.9</strong><span class="stars">★★★★★</span><small>Customer rating</small></div>
+          <div><strong>30–45</strong><span>mins</span><small>Average delivery</small></div>
+          <div><strong>20+</strong><span>dishes</span><small>Made fresh daily</small></div>
         </div>
       </div>
-      <div class="hero-visual reveal">
-        <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
-        <div class="food-plate"><div class="plate-inner"><span class="food-art">🍝</span></div></div>
-        <div class="floating-card delivery-card"><span>⚡</span><div><strong>Fast delivery</strong><small>At your door in 30 mins</small></div></div>
-        <div class="floating-card popular-card"><span>♥</span><div><strong>Most loved</strong><small>Truffle Cream Pasta</small></div></div>
+      <div class="hero-showcase reveal" aria-label="Featured Savorly dishes">
+        <div class="showcase-glow"></div>
+        <div class="featured-dish-card">
+          <div class="featured-label"><span>CHEF'S FAVORITE</span><b>01</b></div>
+          <div class="featured-food"><span>🍝</span></div>
+          <div class="featured-info"><div><small>CREAMY · SAVORY · FRESH</small><strong>Truffle Cream Pasta</strong></div><span class="featured-price">₱289</span></div>
+        </div>
+        <div class="showcase-note note-fresh"><i>🌿</i><span><b>Fresh daily</b><small>Quality ingredients</small></span></div>
+        <div class="showcase-note note-delivery"><i>↗</i><span><b>Delivered hot</b><small>Fast & carefully packed</small></span></div>
+        <div class="showcase-selector"><button class="active" type="button" aria-label="Featured dish 1">01</button><button type="button" aria-label="Featured dish 2">02</button><button type="button" aria-label="Featured dish 3">03</button></div>
       </div>
-    </section>
-
-    <section class="benefits" aria-label="Service benefits">
-      <article><span class="benefit-icon">🌿</span><div><strong>Fresh ingredients</strong><small>Sourced daily, cooked with care</small></div></article>
-      <article><span class="benefit-icon">⏱</span><div><strong>Quick delivery</strong><small>Hot and fresh in 30–45 minutes</small></div></article>
-      <article><span class="benefit-icon">🧡</span><div><strong>Made with love</strong><small>Every dish, made just for you</small></div></article>
     </section>
 
     <section class="menu-section featured-section">
@@ -107,7 +110,11 @@
     </section>
   </main>
 
-  <footer><a class="brand" href="#home"><span class="brand-mark">S</span><span>Savorly</span></a><p>Comfort food, made thoughtfully.</p><a class="text-link" href="admin/">Admin & Staff portal</a><small>© 2026 Savorly Kitchen. All rights reserved.</small></footer>
+  <section class="benefits" aria-label="Service benefits">
+    <article><span class="benefit-icon">🌿</span><div><strong>Fresh ingredients</strong><small>Sourced daily, cooked with care</small></div></article>
+    <article><span class="benefit-icon">⏱</span><div><strong>Quick delivery</strong><small>Hot and fresh in 30–45 minutes</small></div></article>
+    <article><span class="benefit-icon">🧡</span><div><strong>Made with love</strong><small>Every dish, made just for you</small></div></article>
+  </section>
 
   <div class="backdrop hidden"></div>
   <aside class="cart-drawer" aria-label="Shopping cart" aria-hidden="true">

@@ -10,6 +10,8 @@ A responsive online restaurant ordering experience built with HTML, CSS, and Jav
 4. Choose **Import**, select `database/schema.sql`, and run the import. This creates `food_ordering_system_db` and seeds the menu.
 5. Open `http://localhost/food_ordering_system/`.
 
+Copy `.env.example` to `.env` and update it when your MySQL credentials or local URL differ. The included `.env` is configured for the default XAMPP MySQL account and `food_ordering_system_db`. Never commit or publicly share `.env` because it can contain passwords.
+
 ## Login websites
 
 - **Customer ordering website:** `http://localhost/savorly/`
@@ -26,7 +28,7 @@ Initial portal accounts after importing `database/schema.sql`:
 
 Change these demonstration credentials before deploying the project publicly.
 
-The default XAMPP credentials are already configured: MySQL user `root` with an empty password. If yours differ, update `config/database.php` or set the `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` environment variables.
+The default XAMPP credentials are configured in `.env`: MySQL user `root` with an empty password. If yours differ, update the `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` values there.
 
 ## Project structure
 

@@ -14,11 +14,12 @@ final class AdminOrder
             FROM orders o JOIN customers c ON c.id=o.customer_id JOIN order_items oi ON oi.order_id=o.id
             GROUP BY o.id ORDER BY o.created_at DESC LIMIT 100")->fetchAll();
         $stats = $this->db->query("SELECT COUNT(*) total_orders,
-            COALESCE(SUM(CASE WHEN DATE(created_at)=CURDATE() THEN total ELSE 0 END),0) today_revenue,
             SUM(status IN ('Order placed','Preparing')) active_orders,
             COUNT(DISTINCT customer_id) customers FROM orders")->fetch();
+        $todayRevenue = $this->db->query("SELECT COALESCE(SUM(total),0) FROM orders
+            WHERE status='Delivered' AND updated_at>=CURDATE() AND updated_at<DATE_ADD(CURDATE(),INTERVAL 1 DAY)")->fetchColumn();
         return ['orders'=>$orders,'stats'=>[
-            'totalOrders'=>(int)$stats['total_orders'], 'todayRevenue'=>(float)$stats['today_revenue'],
+            'totalOrders'=>(int)$stats['total_orders'], 'todayRevenue'=>(float)$todayRevenue,
             'activeOrders'=>(int)$stats['active_orders'], 'customers'=>(int)$stats['customers']
         ]];
     }
@@ -38,13 +39,13 @@ final class AdminOrder
     public function revenue(string $period): array
     {
         $settings=[
-            'daily'=>['days'=>14,'group'=>"DATE(created_at)",'label'=>"DATE_FORMAT(created_at,'%Y-%m-%d')"],
-            'weekly'=>['days'=>84,'group'=>"YEARWEEK(created_at,1)",'label'=>"DATE_FORMAT(DATE_SUB(DATE(created_at), INTERVAL WEEKDAY(created_at) DAY),'%Y-%m-%d')"],
-            'monthly'=>['days'=>365,'group'=>"DATE_FORMAT(created_at,'%Y-%m')",'label'=>"DATE_FORMAT(created_at,'%Y-%m-01')"],
+            'daily'=>['days'=>14,'group'=>"DATE(updated_at)",'label'=>"DATE_FORMAT(updated_at,'%Y-%m-%d')"],
+            'weekly'=>['days'=>84,'group'=>"YEARWEEK(updated_at,1)",'label'=>"DATE_FORMAT(DATE_SUB(DATE(updated_at), INTERVAL WEEKDAY(updated_at) DAY),'%Y-%m-%d')"],
+            'monthly'=>['days'=>365,'group'=>"DATE_FORMAT(updated_at,'%Y-%m')",'label'=>"DATE_FORMAT(updated_at,'%Y-%m-01')"],
         ];
         if(!isset($settings[$period]))throw new RuntimeException('Invalid revenue period.');
         $setting=$settings[$period];
-        $sql="SELECT {$setting['label']} period_label,COUNT(*) order_count,SUM(total) amount FROM orders WHERE status<>'Cancelled' AND created_at>=DATE_SUB(NOW(),INTERVAL {$setting['days']} DAY) GROUP BY {$setting['group']} ORDER BY MIN(created_at)";
+        $sql="SELECT {$setting['label']} period_label,COUNT(*) order_count,SUM(total) amount FROM orders WHERE status='Delivered' AND updated_at>=DATE_SUB(NOW(),INTERVAL {$setting['days']} DAY) GROUP BY {$setting['group']} ORDER BY MIN(updated_at)";
         $rows=$this->db->query($sql)->fetchAll();
         $points=array_map(function(array $row)use($period):array{
             $date=new DateTimeImmutable($row['period_label']);
