@@ -1,0 +1,27 @@
+.portal-view.hidden { display: none !important; }
+.staff-mode .admin-only { display: none !important; }
+.orders-view { margin-top: 30px; }
+.dashboard-note { padding: 28px; border: 1px solid #e4e6df; border-radius: 14px; background: #fff; }
+.dashboard-note strong { font: 600 20px "Fraunces", serif; }
+.dashboard-note p { margin: 7px 0 18px; color: #718078; font-size: 11px; }
+.dashboard-note button { padding: 10px 16px; border: 0; border-radius: 999px; background: #3e6955; color: #fff; font-size: 10px; font-weight: 700; cursor: pointer; }
+.staff-mode [data-portal-tab="orders"] { background: rgba(255,255,255,.09); color: #fff; }
+.status-select.status-placed { background: #e7f0ff; color: #3265a8; }
+.status-select.status-preparing { background: #fff1d8; color: #a86408; }
+.status-select.status-delivery { background: #eee8ff; color: #6849ae; }
+.status-select.status-delivered { background: #e3f3e8; color: #287346; }
+.status-select.status-cancelled { background: #fde8e5; color: #b34335; }
+.status-control { position: relative; display: inline-block; }
+.status-select { min-width: 145px; display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; }
+.status-menu { position: absolute; z-index: 30; top: calc(100% + 6px); left: 0; width: 180px; padding: 7px; border: 1px solid #e4e6df; border-radius: 12px; background: #fff; box-shadow: 0 16px 40px rgba(32,56,47,.18); }
+.status-option { width: 100%; margin: 3px 0; padding: 9px 10px; border: 0; border-radius: 8px; display: flex; justify-content: space-between; text-align: left; font-size: 9px; font-weight: 700; cursor: pointer; }
+.status-option.status-placed { background: #e7f0ff; color: #3265a8; }
+.status-option.status-preparing { background: #fff1d8; color: #a86408; }
+.status-option.status-delivery { background: #eee8ff; color: #6849ae; }
+.status-option.status-delivered { background: #e3f3e8; color: #287346; }
+.status-option.status-cancelled { background: #fde8e5; color: #b34335; }
+.status-option:hover { filter: brightness(.96); transform: translateX(2px); }
+.status-option.selected { box-shadow: inset 0 0 0 1px currentColor; }
+.orders-panel { overflow: visible; }
+.orders-panel .table-wrap { overflow: visible; }
+@media (max-width: 900px) { .orders-panel .table-wrap { overflow-x: auto; overflow-y: visible; } }

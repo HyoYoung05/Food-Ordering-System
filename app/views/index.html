@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Savorly online food ordering and order tracking system">
+  <title>Savorly — Good food, delivered</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/views.css">
+  <link rel="stylesheet" href="assets/css/password-toggle.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Savorly home"><span class="brand-mark">S</span><span>Savorly</span></a>
+    <button class="hamburger-btn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="customer-sidebar"><span></span><span></span><span></span></button>
+    <nav class="nav" aria-label="Main navigation">
+      <a class="active" href="#home">Home</a>
+      <a href="#menu">Menu</a>
+      <a href="#orders">My orders</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn cart-trigger" type="button" aria-label="Open shopping cart">
+        <span aria-hidden="true">🛍</span><span class="cart-count">0</span>
+      </button>
+      <button class="login-btn" type="button">Log in</button>
+      <button class="profile-btn hidden" type="button" aria-label="Open account menu"><span class="avatar">A</span><span class="profile-name">Alex</span></button>
+    </div>
+  </header>
+
+  <aside class="customer-sidebar" id="customer-sidebar" aria-label="Customer navigation" aria-hidden="true">
+    <div class="sidebar-top"><button class="sidebar-profile" type="button"><span class="sidebar-avatar">G</span><div><strong class="sidebar-profile-name">Guest</strong><small class="sidebar-profile-email">Log in to your account</small></div><b>›</b></button><button class="sidebar-close" type="button" aria-label="Close navigation">×</button></div>
+    <div class="sidebar-label">EXPLORE</div>
+    <nav class="sidebar-nav"><a class="active" href="#home"><span>⌂</span><div><strong>Home</strong><small>Storefront and favorites</small></div></a><a href="#menu"><span>☰</span><div><strong>Menu</strong><small>Browse every dish</small></div></a><a href="#orders"><span>◫</span><div><strong>My Orders</strong><small>Track active orders</small></div></a><a class="sidebar-profile-link hidden" href="#profile"><span>♙</span><div><strong>Profile</strong><small>Account and all orders</small></div></a><button class="sidebar-settings hidden" type="button"><span>⚙</span><div><strong>Settings</strong><small>Edit account information</small></div></button></nav>
+    <div class="sidebar-account">
+      <button class="sidebar-logout hidden" type="button"><span>↪</span> Log out</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="page-view home-view" data-view="home">
+    <section class="hero" id="home">
+      <div class="hero-copy reveal">
+        <div class="eyebrow"><span>✦</span> Freshly made, thoughtfully delivered</div>
+        <h1>Cravings, <em>delivered.</em></h1>
+        <p>From our kitchen to your table — discover comfort food made with honest ingredients and a little extra love.</p>
+        <div class="hero-actions">
+          <a class="primary-btn" href="#menu">Explore the menu <span>→</span></a>
+          <a class="text-link" href="#orders">Track an order</a>
+        </div>
+        <div class="trust-row">
+          <div class="avatar-stack"><span>AM</span><span>JL</span><span>RK</span></div>
+          <div><strong>4.9 <span class="stars">★★★★★</span></strong><small>Loved by 2,000+ foodies</small></div>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+        <div class="food-plate"><div class="plate-inner"><span class="food-art">🍝</span></div></div>
+        <div class="floating-card delivery-card"><span>⚡</span><div><strong>Fast delivery</strong><small>At your door in 30 mins</small></div></div>
+        <div class="floating-card popular-card"><span>♥</span><div><strong>Most loved</strong><small>Truffle Cream Pasta</small></div></div>
+      </div>
+    </section>
+
+    <section class="benefits" aria-label="Service benefits">
+      <article><span class="benefit-icon">🌿</span><div><strong>Fresh ingredients</strong><small>Sourced daily, cooked with care</small></div></article>
+      <article><span class="benefit-icon">⏱</span><div><strong>Quick delivery</strong><small>Hot and fresh in 30–45 minutes</small></div></article>
+      <article><span class="benefit-icon">🧡</span><div><strong>Made with love</strong><small>Every dish, made just for you</small></div></article>
+    </section>
+
+    <section class="menu-section featured-section">
+      <div class="section-heading reveal"><div><span class="kicker">CUSTOMER FAVORITES</span><h2>A taste of what we make</h2></div><p>A few of our most-loved dishes. Visit the full menu to see every available choice.</p></div>
+      <div class="menu-grid featured-grid" aria-label="Featured menu items"></div>
+      <div class="featured-action"><a class="primary-btn" href="#menu">View the complete menu <span>→</span></a></div>
+    </section>
+    </div>
+
+    <section class="menu-section page-view menu-view hidden" id="menu" data-view="menu">
+      <div class="section-heading reveal"><div><span class="kicker">OUR MENU</span><h2>Something for every craving</h2></div><p>Handpicked favorites and kitchen classics, made fresh when you order.</p></div>
+      <div class="menu-toolbar reveal">
+        <div class="categories" role="tablist" aria-label="Menu categories"></div>
+        <label class="search-box"><span>⌕</span><input id="menu-search" type="search" placeholder="Search dishes..." aria-label="Search dishes"></label>
+      </div>
+      <div class="menu-grid" aria-live="polite"></div>
+      <div class="empty-menu hidden"><span>🍽️</span><h3>No dishes found</h3><p>Try a different search or category.</p></div>
+      <nav class="menu-pagination" aria-label="Menu pages"></nav>
+    </section>
+
+    <section class="orders-section page-view orders-view hidden" id="orders" data-view="orders">
+      <div class="section-heading"><div><span class="kicker">YOUR ORDERS</span><h2>Track every delicious moment</h2></div><p>See live order progress and revisit your past favorites.</p></div>
+      <div class="orders-gate">
+        <div class="gate-icon">🧾</div><h3>Log in to view your orders</h3><p>Your active orders, receipts, and order history will appear here.</p><button class="primary-btn login-btn-inline" type="button">Log in to continue</button>
+      </div>
+      <div class="orders-list hidden"></div>
+    </section>
+
+    <section class="profile-section page-view profile-view hidden" id="profile" data-view="profile">
+      <div class="profile-gate orders-gate"><div class="gate-icon">♙</div><h3>Log in to view your profile</h3><p>Your account information and complete order history will appear here.</p><button class="primary-btn login-btn-inline" type="button">Log in to continue</button></div>
+      <div class="profile-content hidden">
+        <div class="profile-hero"><div class="profile-large-avatar">A</div><div><span class="kicker">CUSTOMER PROFILE</span><h1 class="profile-full-name">Customer</h1><p class="profile-username">@username</p></div><button class="secondary-btn edit-profile-page" type="button">Edit profile</button></div>
+        <div class="profile-details"><article><small>Email address</small><strong class="profile-email">—</strong></article><article><small>Phone number</small><strong class="profile-phone">—</strong></article><article><small>Delivery address</small><strong class="profile-address">—</strong></article><article><small>Total orders</small><strong class="profile-order-count">0</strong></article></div>
+        <div class="profile-orders-heading"><div><span class="kicker">ORDER HISTORY</span><h2>All your orders</h2></div><p>Orders can only be cancelled before the kitchen starts preparing them.</p></div>
+        <div class="profile-orders-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer><a class="brand" href="#home"><span class="brand-mark">S</span><span>Savorly</span></a><p>Comfort food, made thoughtfully.</p><a class="text-link" href="admin/">Admin & Staff portal</a><small>© 2026 Savorly Kitchen. All rights reserved.</small></footer>
+
+  <div class="backdrop hidden"></div>
+  <aside class="cart-drawer" aria-label="Shopping cart" aria-hidden="true">
+    <div class="drawer-header"><div><span class="kicker">YOUR ORDER</span><h2>Shopping cart</h2></div><button class="close-btn" type="button" aria-label="Close cart">×</button></div>
+    <div class="cart-items"></div>
+    <div class="cart-empty"><span>🛍️</span><h3>Your cart is waiting</h3><p>Add a dish from the menu to get started.</p></div>
+    <div class="cart-summary hidden">
+      <div><span>Subtotal</span><strong class="cart-subtotal">₱0</strong></div><div><span>Delivery</span><strong>₱49</strong></div><div class="total-row"><span>Total</span><strong class="cart-total">₱0</strong></div>
+      <button class="primary-btn checkout-btn" type="button">Continue to checkout <span>→</span></button>
+    </div>
+  </aside>
+
+  <div class="modal login-modal hidden" role="dialog" aria-modal="true" aria-labelledby="login-title">
+    <button class="modal-close" type="button" aria-label="Close">×</button>
+    <div class="modal-mark">S</div><span class="kicker">WELCOME BACK</span><h2 id="login-title">Customer login</h2><p>Log in to order, track deliveries, and save your favorites.</p>
+    <form id="login-form"><label>Username or email<input name="identifier" required placeholder="alexrivera or alex@example.com" autocomplete="username"></label><label>Password<input name="password" type="password" required minlength="6" placeholder="Enter your password" autocomplete="current-password"></label><button class="primary-btn" type="submit">Login <span>→</span></button></form>
+    <div class="auth-switch"><span>Don't have an account?</span><button class="text-btn open-signup" type="button">Sign up</button></div>
+  </div>
+
+  <div class="modal signup-modal hidden" role="dialog" aria-modal="true" aria-labelledby="signup-title">
+    <button class="modal-close" type="button" aria-label="Close">×</button>
+    <div class="modal-mark">S</div><span class="kicker">JOIN SAVORLY</span><h2 id="signup-title">Create your account</h2><p>Create a customer account to place and track your orders.</p>
+    <form id="signup-form">
+      <div class="signup-row"><label>First name<input name="firstName" required placeholder="Alex" autocomplete="given-name"></label><label>Surname<input name="surname" required placeholder="Rivera" autocomplete="family-name"></label></div>
+      <label>Username<input name="username" required minlength="3" maxlength="30" pattern="[A-Za-z0-9_]+" placeholder="alexrivera" autocomplete="username"></label>
+      <label>Email address<input name="email" type="email" required placeholder="alex@example.com" autocomplete="email"></label>
+      <label>Phone number<div class="phone-field"><select name="phoneCountry" required aria-label="Phone country code"><option value="+63" selected>🇵🇭 Philippines (+63)</option></select><input name="phone" type="tel" required inputmode="numeric" pattern="[0-9]{6,15}" minlength="6" maxlength="15" data-digits-only placeholder="9123456789" autocomplete="tel-national"></div></label>
+      <label>Delivery address<textarea name="address" required placeholder="House number, street, barangay, city" autocomplete="street-address"></textarea></label>
+      <div class="signup-row location-row"><label>Country<select name="country" required autocomplete="country-name"><option value="Philippines" selected>🇵🇭 Philippines</option></select></label><label>ZIP / Postal code<input name="zipCode" required inputmode="numeric" pattern="[0-9]{3,10}" minlength="3" maxlength="10" data-digits-only placeholder="1000" autocomplete="postal-code"></label></div>
+      <div class="signup-row"><label>Password<input name="password" type="password" required minlength="6" placeholder="At least 6 characters" autocomplete="new-password"></label><label>Confirm password<input name="passwordConfirmation" type="password" required minlength="6" placeholder="Repeat password" autocomplete="new-password"></label></div>
+      <button class="primary-btn" type="submit">Create account <span>→</span></button>
+    </form>
+    <div class="auth-switch"><span>Already have an account?</span><button class="text-btn open-login" type="button">Login</button></div>
+  </div>
+
+  <div class="modal profile-modal hidden" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+    <button class="modal-close" type="button" aria-label="Close">×</button>
+    <div class="modal-mark">S</div><span class="kicker">ACCOUNT SETTINGS</span><h2 id="profile-title">Edit your profile</h2><p>Keep your contact and delivery details up to date.</p>
+    <form id="profile-form">
+      <div class="signup-row"><label>First name<input name="firstName" required autocomplete="given-name"></label><label>Surname<input name="surname" required autocomplete="family-name"></label></div>
+      <label>Username<input name="username" required minlength="3" maxlength="30" pattern="[A-Za-z0-9_]+" autocomplete="username"></label>
+      <label>Email address<input name="email" type="email" required autocomplete="email"></label>
+      <label>Phone number<div class="phone-field"><select name="phoneCountry" required aria-label="Phone country code"></select><input name="phone" type="tel" required inputmode="numeric" pattern="[0-9]{6,15}" minlength="6" maxlength="15" data-digits-only autocomplete="tel-national"></div></label>
+      <label>Delivery address<textarea name="address" required autocomplete="street-address"></textarea></label>
+      <div class="signup-row location-row"><label>Country<select name="country" required autocomplete="country-name"></select></label><label>ZIP / Postal code<input name="zipCode" required inputmode="numeric" pattern="[0-9]{3,10}" minlength="3" maxlength="10" data-digits-only autocomplete="postal-code"></label></div>
+      <button class="primary-btn" type="submit">Save changes <span>→</span></button>
+    </form>
+  </div>
+
+  <div class="modal checkout-modal hidden" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+    <button class="modal-close" type="button" aria-label="Close">×</button><span class="kicker">ALMOST THERE</span><h2 id="checkout-title">Delivery details</h2><p>Tell us where to bring your order.</p>
+    <form id="checkout-form"><label>Delivery address<textarea name="address" required placeholder="House number, street, barangay, city"></textarea></label><div class="form-grid"><label>Phone number<input name="phone" required type="tel" inputmode="numeric" pattern="[0-9]{6,19}" minlength="6" maxlength="19" data-digits-only placeholder="639123456789"></label><label>Payment<select name="payment"><option>Cash on delivery</option><option>GCash on delivery</option><option>Card on delivery</option></select></label></div><label>Order notes (optional)<input name="notes" placeholder="No onions, please"></label><button class="primary-btn" type="submit">Place order</button></form>
+  </div>
+
+  <div class="modal success-modal hidden" role="dialog" aria-modal="true" aria-labelledby="success-title">
+    <div class="success-icon">✓</div><span class="kicker">ORDER CONFIRMED</span><h2 id="success-title">Your meal is on its way!</h2><p class="success-copy"></p><div class="success-actions"><button class="primary-btn download-receipt" type="button">Download receipt PDF</button><button class="secondary-btn email-confirmation" type="button">Email confirmation</button></div><button class="text-btn close-success" type="button">View order tracking</button>
+  </div>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="assets/js/password-toggle.js"></script>
+  <script src="assets/js/country-selector.js"></script>
+  <script src="assets/js/input-constraints.js"></script>
+  <script src="app/models/StoreModel.js"></script>
+  <script src="app/models/MenuModel.js"></script>
+  <script src="app/controllers/AppController.js"></script>
+</body>
+</html>
