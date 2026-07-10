@@ -5,10 +5,10 @@ A responsive online restaurant ordering experience built with HTML, CSS, and Jav
 ## Run with XAMPP and MySQL
 
 1. Start **Apache** and **MySQL** from the XAMPP Control Panel.
-2. Copy this project folder into `C:\xampp\htdocs\savorly` (or create an Apache alias pointing to it).
+2. Copy this project folder into `C:\xampp\htdocs\food_ordering_system` (or create an Apache alias pointing to it).
 3. Open `http://localhost/phpmyadmin`.
 4. Choose **Import**, select `database/schema.sql`, and run the import. This creates `food_ordering_system_db` and seeds the menu.
-5. Open `http://localhost/savorly/`.
+5. Open `http://localhost/food_ordering_system/`.
 
 ## Login websites
 
