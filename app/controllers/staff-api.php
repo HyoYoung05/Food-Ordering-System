@@ -11,6 +11,7 @@ require_once __DIR__.'/../models/AdminOrder.php';
 function staffRespond(array $data,int $status=200):never{http_response_code($status);echo json_encode($data,JSON_UNESCAPED_UNICODE);exit;}
 function staffBody():array{return json_decode(file_get_contents('php://input'),true)?:[];}
 function requireStaff():array{if(empty($_SESSION['staff_user']))staffRespond(['ok'=>false,'message'=>'Staff authentication required.'],401);return $_SESSION['staff_user'];}
+function requireAdmin():array{$user=requireStaff();if(($user['role']??'')!=='admin')staffRespond(['ok'=>false,'message'=>'Administrator access required.'],403);return $user;}
 function portalDashboard(PDO $db,array $user):array{
     $data=(new AdminOrder($db))->dashboard();
     if(($user['role']??'staff')!=='admin')unset($data['stats']['todayRevenue']);
@@ -28,6 +29,8 @@ try{
             session_regenerate_id(true);$_SESSION['staff_user']=$user;staffRespond(['ok'=>true,'user'=>$user]);
         case 'logout': unset($_SESSION['staff_user']);staffRespond(['ok'=>true]);
         case 'dashboard': $user=requireStaff();staffRespond(['ok'=>true]+portalDashboard($db,$user));
+        case 'revenue': requireAdmin();staffRespond(['ok'=>true,'revenue'=>(new AdminOrder($db))->revenue($_GET['period']??'daily')]);
+        case 'order-details': requireStaff();staffRespond(['ok'=>true,'details'=>(new AdminOrder($db))->details((int)($_GET['orderId']??0))]);
         case 'status':
             $user=requireStaff();$data=staffBody();(new AdminOrder($db))->updateStatus((int)($data['orderId']??0),$data['status']??'');
             staffRespond(['ok'=>true]+portalDashboard($db,$user));

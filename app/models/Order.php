@@ -60,7 +60,8 @@ final class Order
 
     private function format(array $order): array
     {
-        return ['id'=>$order['order_number'],'databaseId'=>(int)$order['id'],'createdAt'=>strtotime($order['created_at'])*1000,
+        $createdAt=(new DateTimeImmutable($order['created_at'],new DateTimeZone('Asia/Manila')))->getTimestamp()*1000;
+        return ['id'=>$order['order_number'],'databaseId'=>(int)$order['id'],'createdAt'=>$createdAt,
             'email'=>$order['email'],'customer'=>$order['customer'],'items'=>$order['items'],'subtotal'=>(float)$order['subtotal'],
             'delivery'=>(float)$order['delivery_fee'],'total'=>(float)$order['total'],'address'=>$order['delivery_address'],
             'phone'=>$order['phone'],'payment'=>$order['payment_method'],'notes'=>$order['notes'],'status'=>$order['status']];
