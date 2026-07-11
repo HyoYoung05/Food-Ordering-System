@@ -15,4 +15,10 @@ final class Menu
             return $item;
         }, $items);
     }
+
+    public function find(int $id): ?array
+    {
+        $statement=$this->db->prepare('SELECT id,name,category,price,color,image_path AS image,description AS `desc`,badge,is_available AS isAvailable FROM menu_items WHERE id=? LIMIT 1');$statement->execute([$id]);$item=$statement->fetch();
+        if(!$item)return null;$item['id']=(int)$item['id'];$item['price']=(float)$item['price'];$item['isAvailable']=(bool)$item['isAvailable'];return $item;
+    }
 }

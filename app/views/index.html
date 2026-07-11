@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="assets/css/searchable-select.css">
   <link rel="stylesheet" href="assets/css/hero-v3.css">
   <link rel="stylesheet" href="assets/css/featured-carousel.css">
+  <link rel="stylesheet" href="assets/css/product-detail-modal.css">
 </head>
 <body>
   <header class="topbar">
@@ -87,10 +88,12 @@
         <div class="hero-v3-actions"><a class="primary-btn" href="#menu">Browse the full menu</a><a class="secondary-btn" href="#orders">Track an order</a></div>
         <div class="hero-v3-metrics"><div><strong>4.9/5</strong><small>Customer rating</small></div><div><strong>30 to 45 min</strong><small>Average delivery</small></div><div><strong>20+ dishes</strong><small>Prepared fresh daily</small></div></div>
       </div>
-      <div class="hero-v3-feature reveal" aria-label="Today's featured menu item">
-        <div class="hero-v3-photo"><div class="hero-v3-placeholder"><span>SAVORLY</span><strong>Freshly prepared</strong></div><span class="hero-v3-badge">TODAY'S PICK</span></div>
-        <div class="hero-v3-details"><div><small class="hero-v3-category">FEATURED DISH</small><h2 class="hero-v3-name">Truffle Cream Pasta</h2><p class="hero-v3-description">Silky cream sauce, mushrooms, parmesan, and truffle oil.</p></div><strong class="hero-v3-price">PHP 289</strong></div>
-        <div class="hero-v3-service"><span><b>Fresh preparation</b><small>Cooked when you order</small></span><span><b>Careful delivery</b><small>Packed to arrive well</small></span></div>
+      <div class="hero-v3-feature reveal" aria-label="Featured menu carousel">
+        <div class="hero-card-stage" aria-live="polite"></div>
+        <div class="hero-card-controls">
+          <div class="hero-card-dots" role="tablist" aria-label="Choose a featured dish"></div>
+          <span class="hero-card-progress" aria-hidden="true"><i></i></span>
+        </div>
       </div>
     </section>
 
@@ -184,6 +187,8 @@
       <button class="primary-btn" type="submit">Save changes <span>→</span></button>
     </form>
   </div>
+
+  <div class="modal product-detail-modal hidden" role="dialog" aria-modal="true" aria-labelledby="product-detail-title"><button class="modal-close" type="button" aria-label="Close">×</button><div class="product-detail-media"><span>Photo not available</span></div><div class="product-detail-content"><div class="product-detail-meta"><span class="product-detail-category">Category</span><span class="product-detail-badge hidden"></span></div><h2 class="product-detail-name" id="product-detail-title">Product name</h2><p class="product-detail-description">Product description</p><div class="product-detail-footer"><div><small>PRICE</small><strong class="product-detail-price">₱0</strong></div><span class="product-detail-status">Available</span></div><button class="product-detail-add" type="button" data-product-modal-add data-add="">Add to cart</button></div></div>
 
   <div class="modal checkout-modal hidden" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
     <button class="modal-close" type="button" aria-label="Close">×</button>

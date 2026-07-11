@@ -31,6 +31,7 @@ function customerId(): int
 
 function publicBaseUrl(): string
 {
+    $configured=rtrim(Env::get('APP_URL',''),'/');if($configured!==''&&!str_contains($configured,'localhost')&&!str_contains($configured,'127.0.0.1'))return $configured;
     $proto=($_SERVER['HTTP_X_FORWARDED_PROTO']??'')==='https'||(!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')?'https':'http';$host=$_SERVER['HTTP_X_FORWARDED_HOST']??$_SERVER['HTTP_HOST']??'localhost';$path=str_replace('\\','/',dirname(dirname(dirname($_SERVER['SCRIPT_NAME']??'/'))));return $proto.'://'.$host.($path==='/'?'':$path);
 }
 
@@ -44,6 +45,12 @@ try {
             respond(['ok' => true, 'user' => $customer, 'menu' => (new Menu($db))->all(),
                 'cart' => $customer ? (new Cart($db))->get((int)$customer['id']) : [],
                 'orders' => $customer ? (new Order($db))->allForCustomer((int)$customer['id']) : []]);
+
+        case 'product':
+            $id=filter_input(INPUT_GET,'id',FILTER_VALIDATE_INT,['options'=>['min_range'=>1]]);
+            if(!$id)respond(['ok'=>false,'message'=>'A valid numeric product ID is required.'],422);
+            $product=(new Menu($db))->find((int)$id);if(!$product)respond(['ok'=>false,'message'=>'Product not found.'],404);
+            respond(['ok'=>true,'product'=>$product]);
 
         case 'login':
             $data = body();
