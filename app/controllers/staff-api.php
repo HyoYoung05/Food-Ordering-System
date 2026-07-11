@@ -8,6 +8,7 @@ require_once __DIR__.'/../models/AdminUser.php';
 require_once __DIR__.'/../models/StaffUser.php';
 require_once __DIR__.'/../models/AdminOrder.php';
 require_once __DIR__.'/../models/AdminProduct.php';
+require_once __DIR__.'/../services/CloudinaryUploader.php';
 
 function staffRespond(array $data,int $status=200):never{http_response_code($status);echo json_encode($data,JSON_UNESCAPED_UNICODE);exit;}
 function staffBody():array{return json_decode(file_get_contents('php://input'),true)?:[];}
@@ -40,9 +41,7 @@ try{
                 if($_FILES['image']['size']>5*1024*1024)throw new RuntimeException('Food images must be 5 MB or smaller.');
                 $mime=(new finfo(FILEINFO_MIME_TYPE))->file($_FILES['image']['tmp_name']);$extensions=['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'];
                 if(!isset($extensions[$mime]))throw new RuntimeException('Use a JPG, PNG, or WebP food image.');
-                $directory=__DIR__.'/../../assets/uploads/foods';if(!is_dir($directory)&&!mkdir($directory,0775,true))throw new RuntimeException('The image folder could not be created.');
-                $filename=bin2hex(random_bytes(12)).'.'.$extensions[$mime];if(!move_uploaded_file($_FILES['image']['tmp_name'],$directory.'/'.$filename))throw new RuntimeException('The food image could not be saved.');
-                $data['imagePath']='assets/uploads/foods/'.$filename;
+                $data['imagePath']=(new CloudinaryUploader())->upload($_FILES['image']['tmp_name']);
             }
             $data['isAvailable']=filter_var($data['isAvailable']??false,FILTER_VALIDATE_BOOLEAN);staffRespond(['ok'=>true,'product'=>(new AdminProduct($db))->save($data)]);
         case 'product-status': requireStaff();$data=staffBody();staffRespond(['ok'=>true,'product'=>(new AdminProduct($db))->setAvailability((int)($data['id']??0),(bool)($data['isAvailable']??false))]);

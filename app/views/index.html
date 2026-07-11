@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="assets/css/product-images.css">
   <link rel="stylesheet" href="assets/css/hero-redesign.css">
   <link rel="stylesheet" href="assets/css/customer-responsive-polish.css">
+  <link rel="stylesheet" href="assets/css/checkout-redesign.css">
+  <link rel="stylesheet" href="assets/css/checkout-template-override.css">
+  <link rel="stylesheet" href="assets/css/checkout-brand-theme.css">
 </head>
 <body>
   <header class="topbar">
@@ -165,8 +168,12 @@
   </div>
 
   <div class="modal checkout-modal hidden" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
-    <button class="modal-close" type="button" aria-label="Close">×</button><span class="kicker">ALMOST THERE</span><h2 id="checkout-title">Delivery details</h2><p>Tell us where to bring your order.</p>
-    <form id="checkout-form"><label>Delivery address<textarea name="address" required placeholder="House number, street, barangay, city"></textarea></label><div class="form-grid"><label>Phone number<input name="phone" required type="tel" inputmode="numeric" pattern="[0-9]{6,19}" minlength="6" maxlength="19" data-digits-only placeholder="639123456789"></label><label>Payment<select name="payment"><option>Cash on delivery</option><option>GCash on delivery</option><option>Card on delivery</option></select></label></div><label>Order notes (optional)<input name="notes" placeholder="No onions, please"></label><button class="primary-btn" type="submit">Place order</button></form>
+    <button class="modal-close" type="button" aria-label="Close">×</button>
+    <header class="checkout-header"><div><span class="kicker">SECURE CHECKOUT</span><h2 id="checkout-title">Complete your order</h2><p>Review your order and confirm where we should deliver it.</p></div><span class="checkout-step">Final step</span></header>
+    <form id="checkout-form" class="checkout-layout">
+      <section class="checkout-details" aria-labelledby="delivery-heading"><div class="checkout-section-title"><span>01</span><div><h3 id="delivery-heading">Delivery details</h3><p>We’ll use these details to deliver your meal.</p></div></div><label>Delivery address<textarea name="address" required placeholder="House number, street, barangay, city"></textarea></label><label>Phone number<input name="phone" required type="tel" inputmode="numeric" pattern="[0-9]{6,19}" minlength="6" maxlength="19" data-digits-only placeholder="639123456789"></label><label>Order notes <small>Optional</small><textarea name="notes" placeholder="Add delivery instructions or food requests"></textarea></label></section>
+      <aside class="checkout-summary" aria-labelledby="summary-heading"><h3 id="summary-heading">Order summary</h3><div class="checkout-summary-row"><span>Unique items</span><strong class="checkout-unique-items">0</strong></div><div class="checkout-summary-row"><span>Total items</span><strong class="checkout-total-items">0</strong></div><div class="checkout-money"><div><span>Subtotal</span><strong class="checkout-subtotal">₱0</strong></div><div><span>Delivery fee</span><strong>₱49</strong></div><div class="checkout-total"><span>Total</span><strong class="checkout-total-amount">₱0</strong></div></div><div class="payment-heading"><h4>Payment method</h4><small>Choose an available option</small></div><div class="payment-methods"><label class="payment-option active"><input type="radio" name="payment" value="Cash on delivery" checked><span class="payment-mark">✓</span><span><b>Cash on Delivery</b><small>Pay when your order arrives.</small></span><em>Available</em></label><div class="payment-option disabled" aria-disabled="true"><span class="payment-mark">G</span><span><b>GCash</b><small>Digital wallet checkout is coming soon.</small></span><em>Unavailable</em></div><div class="payment-option disabled" aria-disabled="true"><span class="payment-mark">▣</span><span><b>Credit or Debit Card</b><small>Online card payments are coming soon.</small></span><em>Unavailable</em></div><div class="payment-option disabled" aria-disabled="true"><span class="payment-mark">₱</span><span><b>Bank Transfer</b><small>Manual transfers are not active yet.</small></span><em>Unavailable</em></div></div><div class="checkout-note"><span>i</span><p>Orders currently use Cash on Delivery. You can track preparation and delivery from My Orders.</p></div><button class="checkout-place-order" type="submit"><span>Place order</span><b>→</b></button><small class="checkout-safe">🔒 Your order details are securely processed.</small></aside>
+    </form>
   </div>
 
   <div class="modal success-modal hidden" role="dialog" aria-modal="true" aria-labelledby="success-title">

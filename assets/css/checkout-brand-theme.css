@@ -1,0 +1,24 @@
+/* Savorly color theme for the supplied checkout layout. */
+.checkout-modal { background: var(--cream); }
+.checkout-modal .modal-close { background: rgba(41,76,61,.08); color: var(--green-dark); }
+.checkout-modal .modal-close:hover { background: var(--sage); }
+.checkout-header { border-bottom-color: var(--line); background: var(--cream); }
+.checkout-header .kicker { color: var(--orange); }
+.checkout-header h2 { color: var(--green-dark); }
+.checkout-header p { color: var(--muted); }
+.checkout-step { background: #fff0e7; color: #b95729; }
+.modal form.checkout-layout { background: #f3f4ed; }
+.checkout-details { border-color: var(--line); background: #fff; }
+.checkout-section-title > span { background: var(--green); }
+.checkout-section-title h3,.checkout-details label { color: var(--green-dark); }
+.checkout-details input,.checkout-details textarea { border-color: var(--line); background: #fcfcfa; }
+.checkout-details input:focus,.checkout-details textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(71,111,92,.13); }
+.checkout-summary { background: linear-gradient(155deg,var(--green-dark),#1d3d30); box-shadow: 0 20px 45px rgba(41,76,61,.22); }
+.checkout-total strong { color: #f19a67; }
+.payment-option.active { border-color: rgba(238,123,69,.72); background: rgba(238,123,69,.16); }
+.payment-option.active .payment-mark { background: var(--orange); color: #fff; }
+.payment-option em { background: var(--orange); color: #fff; }
+.payment-option.disabled em { background: rgba(255,255,255,.12); color: rgba(255,255,255,.74); }
+.checkout-note { background: rgba(233,240,231,.12); color: #d7e2da; }
+.checkout-place-order { background: var(--orange); color: #fff; }
+.checkout-place-order:hover { background: #d96735; }
