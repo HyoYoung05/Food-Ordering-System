@@ -9,6 +9,7 @@ require_once __DIR__ . '/../models/Customer.php';
 require_once __DIR__ . '/../models/Menu.php';
 require_once __DIR__ . '/../models/Cart.php';
 require_once __DIR__ . '/../models/Order.php';
+require_once __DIR__ . '/../services/EmailService.php';
 
 function respond(array $payload, int $status = 200): never
 {
@@ -26,6 +27,11 @@ function customerId(): int
 {
     if (empty($_SESSION['customer_id'])) respond(['ok' => false, 'message' => 'Please log in first.'], 401);
     return (int)$_SESSION['customer_id'];
+}
+
+function publicBaseUrl(): string
+{
+    $proto=($_SERVER['HTTP_X_FORWARDED_PROTO']??'')==='https'||(!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')?'https':'http';$host=$_SERVER['HTTP_X_FORWARDED_HOST']??$_SERVER['HTTP_HOST']??'localhost';$path=str_replace('\\','/',dirname(dirname(dirname($_SERVER['SCRIPT_NAME']??'/'))));return $proto.'://'.$host.($path==='/'?'':$path);
 }
 
 try {
@@ -61,9 +67,9 @@ try {
                 respond(['ok' => false, 'message' => 'Phone number and ZIP/postal code must contain numbers only.'], 422);
             }
             $customer = (new Customer($db))->register($data['firstName'], $data['surname'], $data['username'] ?? '', $data['email'], $data['password'], $data['phone'], $data['phoneCountry'], $data['address'], $data['country'], $data['zipCode']);
-            session_regenerate_id(true);
-            $_SESSION['customer_id'] = $customer['id']; $_SESSION['customer'] = $customer;
-            respond(['ok' => true, 'user' => $customer, 'cart' => (new Cart($db))->get($customer['id']), 'orders' => (new Order($db))->allForCustomer($customer['id'])]);
+            $token=$customer['_verificationToken'];unset($customer['_verificationToken']);$url=publicBaseUrl().'/app/controllers/verify-email.php?token='.rawurlencode($token);
+            try{(new EmailService())->sendVerification($customer,$url);}catch(Throwable $mailError){$db->prepare('DELETE FROM customers WHERE id=? AND email_verified_at IS NULL')->execute([$customer['id']]);error_log('Verification email failed: '.$mailError->getMessage());throw new RuntimeException('The verification email could not be sent. Check the address and try again.');}
+            respond(['ok'=>true,'requiresVerification'=>true,'message'=>'Account created. Check your email and click the verification link before logging in.']);
 
         case 'profile':
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') respond(['ok' => false, 'message' => 'Method not allowed.'], 405);
@@ -91,7 +97,8 @@ try {
                 respond(['ok' => false, 'message' => 'Address, phone, and payment method are required.'], 422);
             }
             if (!preg_match('/^[0-9]{6,19}$/', trim($data['phone']))) respond(['ok' => false, 'message' => 'Phone number must contain numbers only.'], 422);
-            respond(['ok' => true, 'order' => (new Order($db))->create(customerId(), $data)]);
+            $order=(new Order($db))->create(customerId(),$data);$emailSent=true;try{(new EmailService())->sendOrderReceipt($order);}catch(Throwable $mailError){$emailSent=false;error_log('Order receipt email failed: '.$mailError->getMessage());}
+            respond(['ok'=>true,'order'=>$order,'emailSent'=>$emailSent]);
 
         case 'cancel-order':
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') respond(['ok' => false, 'message' => 'Method not allowed.'], 405);

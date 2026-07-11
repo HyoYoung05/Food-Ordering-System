@@ -12,6 +12,9 @@ CREATE TABLE IF NOT EXISTS customers (
   username VARCHAR(60) NULL UNIQUE,
   email VARCHAR(190) NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
+  email_verified_at DATETIME NULL,
+  email_verification_token CHAR(64) NULL,
+  email_verification_expires_at DATETIME NULL,
   phone VARCHAR(30) NULL,
   phone_country VARCHAR(8) NULL,
   delivery_address VARCHAR(255) NULL,
@@ -30,6 +33,9 @@ ALTER TABLE customers ADD COLUMN IF NOT EXISTS delivery_address VARCHAR(255) NUL
 ALTER TABLE customers ADD COLUMN IF NOT EXISTS phone_country VARCHAR(8) NULL AFTER phone;
 ALTER TABLE customers ADD COLUMN IF NOT EXISTS country VARCHAR(80) NULL AFTER delivery_address;
 ALTER TABLE customers ADD COLUMN IF NOT EXISTS zip_code VARCHAR(20) NULL AFTER country;
+ALTER TABLE customers ADD COLUMN IF NOT EXISTS email_verified_at DATETIME NULL AFTER password_hash;
+ALTER TABLE customers ADD COLUMN IF NOT EXISTS email_verification_token CHAR(64) NULL AFTER email_verified_at;
+ALTER TABLE customers ADD COLUMN IF NOT EXISTS email_verification_expires_at DATETIME NULL AFTER email_verification_token;
 
 CREATE TABLE IF NOT EXISTS staff_users (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

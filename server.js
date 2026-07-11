@@ -7,6 +7,10 @@ const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascrip
 
 http.createServer((req, res) => {
   const requested = req.url === '/' ? '/app/views/index.html' : req.url.split('?')[0];
+  if (requested.split('/').some(part => part.startsWith('.')) || requested.startsWith('/config/') || requested.startsWith('/vendor/')) {
+    res.writeHead(403);
+    return res.end('Forbidden');
+  }
   const file = path.join(root, requested);
   if (!file.startsWith(root)) { res.writeHead(403); return res.end('Forbidden'); }
   fs.readFile(file, (error, data) => {
