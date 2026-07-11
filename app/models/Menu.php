@@ -7,7 +7,7 @@ final class Menu
 
     public function all(): array
     {
-        $items = $this->db->query('SELECT id, name, category, price, emoji, color, image_path AS image, description AS `desc`, badge, is_available AS isAvailable FROM menu_items ORDER BY id')->fetchAll();
+        $items = $this->db->query('SELECT id, name, category, price, color, image_path AS image, description AS `desc`, badge, is_available AS isAvailable FROM menu_items ORDER BY id')->fetchAll();
         return array_map(static function (array $item): array {
             $item['id'] = (int)$item['id'];
             $item['price'] = (float)$item['price'];

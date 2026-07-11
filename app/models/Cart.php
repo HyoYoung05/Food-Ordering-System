@@ -7,7 +7,7 @@ final class Cart
 
     public function get(int $customerId): array
     {
-        $sql = 'SELECT m.id, m.name, m.category, m.price, m.emoji, m.color, m.image_path AS image, m.description AS `desc`, m.badge, c.quantity AS qty
+        $sql = 'SELECT m.id, m.name, m.category, m.price, m.color, m.image_path AS image, m.description AS `desc`, m.badge, c.quantity AS qty
                 FROM cart_items c JOIN menu_items m ON m.id = c.menu_item_id
                 WHERE c.customer_id = ? AND m.is_available = 1 ORDER BY c.updated_at DESC';
         $statement = $this->db->prepare($sql);

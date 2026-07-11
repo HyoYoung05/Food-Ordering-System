@@ -74,13 +74,14 @@ CREATE TABLE IF NOT EXISTS menu_items (
   category VARCHAR(60) NOT NULL,
   description VARCHAR(255) NOT NULL,
   price DECIMAL(10,2) NOT NULL,
-  emoji VARCHAR(20) NOT NULL,
   color VARCHAR(20) NOT NULL DEFAULT '#e9d5b5',
   image_path VARCHAR(255) NULL,
   badge VARCHAR(30) NULL,
   is_available TINYINT(1) NOT NULL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
+
+ALTER TABLE menu_items DROP COLUMN IF EXISTS emoji;
 
 CREATE TABLE IF NOT EXISTS cart_items (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -132,29 +133,29 @@ CREATE TABLE IF NOT EXISTS order_status_history (
   CONSTRAINT fk_history_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-INSERT INTO menu_items (id, name, category, description, price, emoji, color, badge) VALUES
-  (1,'Truffle Cream Pasta','Pasta','Silky cream sauce, mushrooms, parmesan, and truffle oil.',289,'🍝','#e9d5b5','BESTSELLER'),
-  (2,'Crispy Chicken Bowl','Bowls','Golden chicken, garlic rice, fresh greens, and house sauce.',249,'🍗','#e4c69e','POPULAR'),
-  (3,'Garden Pesto Pasta','Pasta','Basil pesto, cherry tomatoes, greens, and toasted seeds.',259,'🥗','#bfceb0',NULL),
-  (4,'Smoky Beef Burger','Burgers','Smashed beef, cheddar, caramelized onions, and smoky mayo.',279,'🍔','#dfb792',NULL),
-  (5,'Honey Garlic Wings','Sides','Crispy wings glazed with sweet garlic and sesame.',229,'🍖','#dba980','NEW'),
-  (6,'Mango Cloud Shake','Drinks','Fresh mango, creamy milk, and a soft whipped finish.',149,'🥭','#f4ce83',NULL),
-  (7,'Classic Tiramisu','Desserts','Espresso-soaked layers with mascarpone and cocoa.',179,'🍰','#caa889',NULL),
-  (8,'Citrus Garden Fizz','Drinks','Calamansi, lemon, sparkling water, and fresh mint.',129,'🍹','#c8d8a8',NULL),
-  (9,'Four Cheese Pizza','Pizza','Mozzarella, cheddar, parmesan, and creamy blue cheese.',329,'🍕','#edc989','POPULAR'),
-  (10,'Teriyaki Salmon Bowl','Bowls','Glazed salmon, steamed rice, edamame, and sesame.',349,'🍱','#d6bd9b',NULL),
-  (11,'Spicy Chicken Burger','Burgers','Crispy chicken, chili glaze, slaw, and cooling ranch.',269,'🍔','#d9a074',NULL),
-  (12,'Roasted Tomato Pasta','Pasta','Slow-roasted tomato sauce, garlic, basil, and parmesan.',239,'🍝','#dca27d',NULL),
-  (13,'Loaded Potato Wedges','Sides','Crisp potato wedges, cheese sauce, herbs, and bacon.',189,'🍟','#eccd8f',NULL),
-  (14,'Matcha Cream Latte','Drinks','Ceremonial matcha, fresh milk, and vanilla cream.',159,'🍵','#b9c99d',NULL),
-  (15,'Chocolate Lava Cake','Desserts','Warm chocolate cake with a rich molten center.',199,'🍫','#b9957d','NEW'),
-  (16,'Margherita Pizza','Pizza','Tomatoes, fresh mozzarella, basil, and olive oil.',289,'🍕','#dfb47d',NULL),
-  (17,'Korean Beef Bowl','Bowls','Savory beef, kimchi, steamed rice, and a fried egg.',279,'🍚','#c69c78',NULL),
-  (18,'Caesar Garden Salad','Salads','Crisp romaine, parmesan, croutons, and Caesar dressing.',219,'🥗','#b8c995',NULL),
-  (19,'Strawberry Cheesecake','Desserts','Creamy cheesecake with a bright strawberry topping.',189,'🍰','#e6b5b2',NULL),
-  (20,'Cold Brew Caramel','Drinks','Slow-steeped coffee, caramel, milk, and soft cream.',149,'🧋','#c3a486',NULL)
+INSERT INTO menu_items (id, name, category, description, price, color, badge) VALUES
+  (1,'Truffle Cream Pasta','Pasta','Silky cream sauce, mushrooms, parmesan, and truffle oil.',289,'#e9d5b5','BESTSELLER'),
+  (2,'Crispy Chicken Bowl','Bowls','Golden chicken, garlic rice, fresh greens, and house sauce.',249,'#e4c69e','POPULAR'),
+  (3,'Garden Pesto Pasta','Pasta','Basil pesto, cherry tomatoes, greens, and toasted seeds.',259,'#bfceb0',NULL),
+  (4,'Smoky Beef Burger','Burgers','Smashed beef, cheddar, caramelized onions, and smoky mayo.',279,'#dfb792',NULL),
+  (5,'Honey Garlic Wings','Sides','Crispy wings glazed with sweet garlic and sesame.',229,'#dba980','NEW'),
+  (6,'Mango Cloud Shake','Drinks','Fresh mango, creamy milk, and a soft whipped finish.',149,'#f4ce83',NULL),
+  (7,'Classic Tiramisu','Desserts','Espresso-soaked layers with mascarpone and cocoa.',179,'#caa889',NULL),
+  (8,'Citrus Garden Fizz','Drinks','Calamansi, lemon, sparkling water, and fresh mint.',129,'#c8d8a8',NULL),
+  (9,'Four Cheese Pizza','Pizza','Mozzarella, cheddar, parmesan, and creamy blue cheese.',329,'#edc989','POPULAR'),
+  (10,'Teriyaki Salmon Bowl','Bowls','Glazed salmon, steamed rice, edamame, and sesame.',349,'#d6bd9b',NULL),
+  (11,'Spicy Chicken Burger','Burgers','Crispy chicken, chili glaze, slaw, and cooling ranch.',269,'#d9a074',NULL),
+  (12,'Roasted Tomato Pasta','Pasta','Slow-roasted tomato sauce, garlic, basil, and parmesan.',239,'#dca27d',NULL),
+  (13,'Loaded Potato Wedges','Sides','Crisp potato wedges, cheese sauce, herbs, and bacon.',189,'#eccd8f',NULL),
+  (14,'Matcha Cream Latte','Drinks','Ceremonial matcha, fresh milk, and vanilla cream.',159,'#b9c99d',NULL),
+  (15,'Chocolate Lava Cake','Desserts','Warm chocolate cake with a rich molten center.',199,'#b9957d','NEW'),
+  (16,'Margherita Pizza','Pizza','Tomatoes, fresh mozzarella, basil, and olive oil.',289,'#dfb47d',NULL),
+  (17,'Korean Beef Bowl','Bowls','Savory beef, kimchi, steamed rice, and a fried egg.',279,'#c69c78',NULL),
+  (18,'Caesar Garden Salad','Salads','Crisp romaine, parmesan, croutons, and Caesar dressing.',219,'#b8c995',NULL),
+  (19,'Strawberry Cheesecake','Desserts','Creamy cheesecake with a bright strawberry topping.',189,'#e6b5b2',NULL),
+  (20,'Cold Brew Caramel','Drinks','Slow-steeped coffee, caramel, milk, and soft cream.',149,'#c3a486',NULL)
 ON DUPLICATE KEY UPDATE name=VALUES(name), category=VALUES(category), description=VALUES(description),
-  price=VALUES(price), emoji=VALUES(emoji), color=VALUES(color), badge=VALUES(badge);
+  price=VALUES(price), color=VALUES(color), badge=VALUES(badge);
 
 -- Demo portal accounts. Change these passwords after your first login.
 -- Admin password: Admin@123 | Staff password: Staff@123

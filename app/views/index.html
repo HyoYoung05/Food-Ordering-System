@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="assets/css/checkout-template-override.css">
   <link rel="stylesheet" href="assets/css/checkout-brand-theme.css">
   <link rel="stylesheet" href="assets/css/searchable-select.css">
+  <link rel="stylesheet" href="assets/css/hero-v3.css">
+  <link rel="stylesheet" href="assets/css/featured-carousel.css">
 </head>
 <body>
   <header class="topbar">
@@ -31,7 +33,7 @@
     </nav>
     <div class="header-actions">
       <button class="icon-btn cart-trigger" type="button" aria-label="Open shopping cart">
-        <span aria-hidden="true">🛍</span><span class="cart-count">0</span>
+        <span aria-hidden="true">Cart</span><span class="cart-count">0</span>
       </button>
       <button class="login-btn" type="button">Log in</button>
       <button class="profile-btn hidden" type="button" aria-label="Open account menu"><span class="avatar">A</span><span class="profile-name">Alex</span></button>
@@ -49,7 +51,7 @@
 
   <main>
     <div class="page-view home-view" data-view="home">
-    <section class="hero hero-new" id="home">
+    <section class="hero hero-new hidden" aria-hidden="true">
       <div class="hero-copy reveal">
         <span class="hero-kicker"><i></i> Open today · 10:00 AM–10:00 PM</span>
         <h1>Food worth<br><em>slowing down</em><br>for.</h1>
@@ -68,19 +70,33 @@
         <div class="showcase-glow"></div>
         <div class="featured-dish-card">
           <div class="featured-label"><span>CHEF'S FAVORITE</span><b>01</b></div>
-          <div class="featured-food"><span>🍝</span></div>
+          <div class="featured-food"><span class="featured-monogram">S</span></div>
           <div class="featured-info"><div><small>CREAMY · SAVORY · FRESH</small><strong>Truffle Cream Pasta</strong></div><span class="featured-price">₱289</span></div>
         </div>
-        <div class="showcase-note note-fresh"><i>🌿</i><span><b>Fresh daily</b><small>Quality ingredients</small></span></div>
+        <div class="showcase-note note-fresh"><span><b>Fresh daily</b><small>Quality ingredients</small></span></div>
         <div class="showcase-note note-delivery"><i>↗</i><span><b>Delivered hot</b><small>Fast & carefully packed</small></span></div>
         <div class="showcase-selector"><button class="active" type="button" aria-label="Featured dish 1">01</button><button type="button" aria-label="Featured dish 2">02</button><button type="button" aria-label="Featured dish 3">03</button></div>
       </div>
     </section>
 
-    <section class="menu-section featured-section">
-      <div class="section-heading reveal"><div><span class="kicker">CUSTOMER FAVORITES</span><h2>A taste of what we make</h2></div><p>A few of our most-loved dishes. Visit the full menu to see every available choice.</p></div>
-      <div class="menu-grid featured-grid" aria-label="Featured menu items"></div>
-      <div class="featured-action"><a class="primary-btn" href="#menu">View the complete menu <span>→</span></a></div>
+    <section class="hero hero-v3" id="home">
+      <div class="hero-v3-copy reveal">
+        <div class="hero-v3-status"><span>SAVORLY KITCHEN</span><small>Open today, 10:00 AM to 10:00 PM</small></div>
+        <h1>Every craving<br>has a place<br><em>at our table.</em></h1>
+        <p>Thoughtfully prepared comfort food, reliable delivery, and flavors you will want to order again.</p>
+        <div class="hero-v3-actions"><a class="primary-btn" href="#menu">Browse the full menu</a><a class="secondary-btn" href="#orders">Track an order</a></div>
+        <div class="hero-v3-metrics"><div><strong>4.9/5</strong><small>Customer rating</small></div><div><strong>30 to 45 min</strong><small>Average delivery</small></div><div><strong>20+ dishes</strong><small>Prepared fresh daily</small></div></div>
+      </div>
+      <div class="hero-v3-feature reveal" aria-label="Today's featured menu item">
+        <div class="hero-v3-photo"><div class="hero-v3-placeholder"><span>SAVORLY</span><strong>Freshly prepared</strong></div><span class="hero-v3-badge">TODAY'S PICK</span></div>
+        <div class="hero-v3-details"><div><small class="hero-v3-category">FEATURED DISH</small><h2 class="hero-v3-name">Truffle Cream Pasta</h2><p class="hero-v3-description">Silky cream sauce, mushrooms, parmesan, and truffle oil.</p></div><strong class="hero-v3-price">PHP 289</strong></div>
+        <div class="hero-v3-service"><span><b>Fresh preparation</b><small>Cooked when you order</small></span><span><b>Careful delivery</b><small>Packed to arrive well</small></span></div>
+      </div>
+    </section>
+
+    <section class="menu-section featured-section carousel-section">
+      <div class="carousel-heading reveal"><div><span class="kicker">CUSTOMER FAVORITES</span><h2>Made fresh. Moving fast.</h2><p>Explore customer favorites as they move through our kitchen lineup.</p></div><a class="carousel-menu-link" href="#menu">View the complete menu</a></div>
+      <div class="featured-carousel" aria-label="Infinite scrolling featured menu"><div class="featured-track"></div></div>
     </section>
     </div>
 
@@ -91,14 +107,14 @@
         <label class="search-box"><span>⌕</span><input id="menu-search" type="search" placeholder="Search dishes..." aria-label="Search dishes"></label>
       </div>
       <div class="menu-grid" aria-live="polite"></div>
-      <div class="empty-menu hidden"><span>🍽️</span><h3>No dishes found</h3><p>Try a different search or category.</p></div>
+      <div class="empty-menu hidden"><h3>No dishes found</h3><p>Try a different search or category.</p></div>
       <nav class="menu-pagination" aria-label="Menu pages"></nav>
     </section>
 
     <section class="orders-section page-view orders-view hidden" id="orders" data-view="orders">
       <div class="section-heading"><div><span class="kicker">YOUR ORDERS</span><h2>Track every delicious moment</h2></div><p>See live order progress and revisit your past favorites.</p></div>
       <div class="orders-gate">
-        <div class="gate-icon">🧾</div><h3>Log in to view your orders</h3><p>Your active orders, receipts, and order history will appear here.</p><button class="primary-btn login-btn-inline" type="button">Log in to continue</button>
+        <h3>Log in to view your orders</h3><p>Your active orders, receipts, and order history will appear here.</p><button class="primary-btn login-btn-inline" type="button">Log in to continue</button>
       </div>
       <div class="orders-list hidden"></div>
     </section>
@@ -115,16 +131,16 @@
   </main>
 
   <section class="benefits" aria-label="Service benefits">
-    <article><span class="benefit-icon">🌿</span><div><strong>Fresh ingredients</strong><small>Sourced daily, cooked with care</small></div></article>
-    <article><span class="benefit-icon">⏱</span><div><strong>Quick delivery</strong><small>Hot and fresh in 30–45 minutes</small></div></article>
-    <article><span class="benefit-icon">🧡</span><div><strong>Made with love</strong><small>Every dish, made just for you</small></div></article>
+    <article><div><strong>Fresh ingredients</strong><small>Sourced daily, cooked with care</small></div></article>
+    <article><div><strong>Quick delivery</strong><small>Hot and fresh in 30–45 minutes</small></div></article>
+    <article><div><strong>Made with care</strong><small>Every dish is prepared just for you</small></div></article>
   </section>
 
   <div class="backdrop hidden"></div>
   <aside class="cart-drawer" aria-label="Shopping cart" aria-hidden="true">
     <div class="drawer-header"><div><span class="kicker">YOUR ORDER</span><h2>Shopping cart</h2></div><button class="close-btn" type="button" aria-label="Close cart">×</button></div>
     <div class="cart-items"></div>
-    <div class="cart-empty"><span>🛍️</span><h3>Your cart is waiting</h3><p>Add a dish from the menu to get started.</p></div>
+    <div class="cart-empty"><h3>Your cart is waiting</h3><p>Add a dish from the menu to get started.</p></div>
     <div class="cart-summary hidden">
       <div><span>Subtotal</span><strong class="cart-subtotal">₱0</strong></div><div><span>Delivery</span><strong>₱49</strong></div><div class="total-row"><span>Total</span><strong class="cart-total">₱0</strong></div>
       <button class="primary-btn checkout-btn" type="button">Continue to checkout <span>→</span></button>
@@ -174,7 +190,7 @@
     <header class="checkout-header"><div><span class="kicker">SECURE CHECKOUT</span><h2 id="checkout-title">Complete your order</h2><p>Review your order and confirm where we should deliver it.</p></div><span class="checkout-step">Final step</span></header>
     <form id="checkout-form" class="checkout-layout">
       <section class="checkout-details" aria-labelledby="delivery-heading"><div class="checkout-section-title"><span>01</span><div><h3 id="delivery-heading">Delivery details</h3><p>We’ll use these details to deliver your meal.</p></div></div><label>Delivery address<textarea name="address" required placeholder="House number, street, barangay, city"></textarea></label><label>Phone number<input name="phone" required type="tel" inputmode="numeric" pattern="[0-9]{6,19}" minlength="6" maxlength="19" data-digits-only placeholder="639123456789"></label><label>Order notes <small>Optional</small><textarea name="notes" placeholder="Add delivery instructions or food requests"></textarea></label></section>
-      <aside class="checkout-summary" aria-labelledby="summary-heading"><h3 id="summary-heading">Order summary</h3><div class="checkout-summary-row"><span>Unique items</span><strong class="checkout-unique-items">0</strong></div><div class="checkout-summary-row"><span>Total items</span><strong class="checkout-total-items">0</strong></div><div class="checkout-money"><div><span>Subtotal</span><strong class="checkout-subtotal">₱0</strong></div><div><span>Delivery fee</span><strong>₱49</strong></div><div class="checkout-total"><span>Total</span><strong class="checkout-total-amount">₱0</strong></div></div><div class="payment-heading"><h4>Payment method</h4><small>Choose an available option</small></div><div class="payment-methods"><label class="payment-option active"><input type="radio" name="payment" value="Cash on delivery" checked><span class="payment-mark">✓</span><span><b>Cash on Delivery</b><small>Pay when your order arrives.</small></span><em>Available</em></label><div class="payment-option disabled" aria-disabled="true"><span class="payment-mark">G</span><span><b>GCash</b><small>Digital wallet checkout is coming soon.</small></span><em>Unavailable</em></div><div class="payment-option disabled" aria-disabled="true"><span class="payment-mark">▣</span><span><b>Credit or Debit Card</b><small>Online card payments are coming soon.</small></span><em>Unavailable</em></div><div class="payment-option disabled" aria-disabled="true"><span class="payment-mark">₱</span><span><b>Bank Transfer</b><small>Manual transfers are not active yet.</small></span><em>Unavailable</em></div></div><div class="checkout-note"><span>i</span><p>Orders currently use Cash on Delivery. You can track preparation and delivery from My Orders.</p></div><button class="checkout-place-order" type="submit"><span>Place order</span><b>→</b></button><small class="checkout-safe">🔒 Your order details are securely processed.</small></aside>
+      <aside class="checkout-summary" aria-labelledby="summary-heading"><h3 id="summary-heading">Order summary</h3><div class="checkout-summary-row"><span>Unique items</span><strong class="checkout-unique-items">0</strong></div><div class="checkout-summary-row"><span>Total items</span><strong class="checkout-total-items">0</strong></div><div class="checkout-money"><div><span>Subtotal</span><strong class="checkout-subtotal">₱0</strong></div><div><span>Delivery fee</span><strong>₱49</strong></div><div class="checkout-total"><span>Total</span><strong class="checkout-total-amount">₱0</strong></div></div><div class="payment-heading"><h4>Payment method</h4><small>Choose an available option</small></div><div class="payment-methods"><label class="payment-option active"><input type="radio" name="payment" value="Cash on delivery" checked><span class="payment-mark">COD</span><span><b>Cash on Delivery</b><small>Pay when your order arrives.</small></span><em>Available</em></label><div class="payment-option disabled" aria-disabled="true"><span class="payment-mark">G</span><span><b>GCash</b><small>Digital wallet checkout is coming soon.</small></span><em>Unavailable</em></div><div class="payment-option disabled" aria-disabled="true"><span class="payment-mark">Card</span><span><b>Credit or Debit Card</b><small>Online card payments are coming soon.</small></span><em>Unavailable</em></div><div class="payment-option disabled" aria-disabled="true"><span class="payment-mark">Bank</span><span><b>Bank Transfer</b><small>Manual transfers are not active yet.</small></span><em>Unavailable</em></div></div><div class="checkout-note"><span>i</span><p>Orders currently use Cash on Delivery. You can track preparation and delivery from My Orders.</p></div><button class="checkout-place-order" type="submit"><span>Place order</span><b>→</b></button><small class="checkout-safe">Your order details are securely processed.</small></aside>
     </form>
   </div>
 

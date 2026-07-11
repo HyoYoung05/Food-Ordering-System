@@ -16,7 +16,7 @@ final class AdminProduct
         if($name===''||$category===''||$description===''||$price<=0)throw new RuntimeException('Name, category, notes, and a valid price are required.');
         $badge=strtoupper(trim($data['badge']??''));$badge=in_array($badge,['NEW','POPULAR','BESTSELLER'],true)?$badge:null;$imagePath=$data['imagePath']??null;
         if($id){$current=$this->find($id);if(!$current)throw new RuntimeException('Product not found.');$imagePath=$imagePath?:$current['image'];$available=$current['isAvailable']?1:0;$statement=$this->db->prepare('UPDATE menu_items SET name=?,category=?,description=?,price=?,badge=?,is_available=?,image_path=? WHERE id=?');$statement->execute([$name,$category,$description,$price,$badge,$available,$imagePath,$id]);}
-        else{$statement=$this->db->prepare('INSERT INTO menu_items (name,category,description,price,emoji,color,badge,is_available,image_path) VALUES (?,?,?,?,?,?,?,?,?)');$statement->execute([$name,$category,$description,$price,'','#e9d5b5',$badge,1,$imagePath]);$id=(int)$this->db->lastInsertId();}
+        else{$statement=$this->db->prepare('INSERT INTO menu_items (name,category,description,price,color,badge,is_available,image_path) VALUES (?,?,?,?,?,?,?,?)');$statement->execute([$name,$category,$description,$price,'#e9d5b5',$badge,1,$imagePath]);$id=(int)$this->db->lastInsertId();}
         return $this->find($id);
     }
 
