@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="assets/css/checkout-redesign.css">
   <link rel="stylesheet" href="assets/css/checkout-template-override.css">
   <link rel="stylesheet" href="assets/css/checkout-brand-theme.css">
+  <link rel="stylesheet" href="assets/css/searchable-select.css">
 </head>
 <body>
   <header class="topbar">
@@ -133,7 +134,8 @@
   <div class="modal login-modal hidden" role="dialog" aria-modal="true" aria-labelledby="login-title">
     <button class="modal-close" type="button" aria-label="Close">×</button>
     <div class="modal-mark">S</div><span class="kicker">WELCOME BACK</span><h2 id="login-title">Customer login</h2><p>Log in to order, track deliveries, and save your favorites.</p>
-    <form id="login-form"><label>Username or email<input name="identifier" required placeholder="alexrivera or alex@example.com" autocomplete="username"></label><label>Password<input name="password" type="password" required minlength="6" placeholder="Enter your password" autocomplete="current-password"></label><button class="primary-btn" type="submit">Login <span>→</span></button></form>
+    <form id="login-form"><label>Username or email<input name="identifier" required placeholder="alexrivera or alex@example.com" autocomplete="username"></label><label>Password<input name="password" type="password" required minlength="6" placeholder="Enter your password" autocomplete="current-password"></label><button class="forgot-password" type="button">Forgot password?</button><button class="primary-btn" type="submit">Login <span>→</span></button></form>
+    <button class="resend-verification" type="button">Didn't receive the verification email? <strong>Resend it</strong></button>
     <div class="auth-switch"><span>Don't have an account?</span><button class="text-btn open-signup" type="button">Sign up</button></div>
   </div>
 
@@ -182,6 +184,7 @@
   <div class="toast" role="status" aria-live="polite"></div>
   <script src="assets/js/password-toggle.js"></script>
   <script src="assets/js/country-selector.js"></script>
+  <script src="assets/js/searchable-country-select.js"></script>
   <script src="assets/js/input-constraints.js"></script>
   <script src="app/models/StoreModel.js"></script>
   <script src="app/models/MenuModel.js"></script>

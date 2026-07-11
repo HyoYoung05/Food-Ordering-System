@@ -71,6 +71,20 @@ try {
             try{(new EmailService())->sendVerification($customer,$url);}catch(Throwable $mailError){$db->prepare('DELETE FROM customers WHERE id=? AND email_verified_at IS NULL')->execute([$customer['id']]);error_log('Verification email failed: '.$mailError->getMessage());throw new RuntimeException('The verification email could not be sent. Check the address and try again.');}
             respond(['ok'=>true,'requiresVerification'=>true,'message'=>'Account created. Check your email and click the verification link before logging in.']);
 
+        case 'resend-verification':
+            if($_SERVER['REQUEST_METHOD']!=='POST')respond(['ok'=>false,'message'=>'Method not allowed.'],405);$data=body();$identifier=trim($data['identifier']??'');
+            if($identifier==='')respond(['ok'=>false,'message'=>'Enter your username or email first.'],422);
+            $customer=(new Customer($db))->prepareVerificationResend($identifier);
+            if($customer){$token=$customer['_verificationToken'];unset($customer['_verificationToken']);$url=publicBaseUrl().'/app/controllers/verify-email.php?token='.rawurlencode($token);try{(new EmailService())->sendVerification($customer,$url);}catch(Throwable $mailError){error_log('Resent verification email failed: '.$mailError->getMessage());throw new RuntimeException('The verification email could not be sent right now. Please try again later.');}}
+            respond(['ok'=>true,'message'=>'If that account is awaiting verification, a new email has been sent.']);
+
+        case 'forgot-password':
+            if($_SERVER['REQUEST_METHOD']!=='POST')respond(['ok'=>false,'message'=>'Method not allowed.'],405);$data=body();$identifier=trim($data['identifier']??'');
+            if($identifier==='')respond(['ok'=>false,'message'=>'Enter your username or email first.'],422);
+            $customer=(new Customer($db))->preparePasswordReset($identifier);
+            if($customer){$token=$customer['_resetToken'];unset($customer['_resetToken']);$url=publicBaseUrl().'/app/controllers/reset-password.php?token='.rawurlencode($token);try{(new EmailService())->sendPasswordReset($customer,$url);}catch(Throwable $mailError){error_log('Password reset email failed: '.$mailError->getMessage());throw new RuntimeException('The password reset email could not be sent right now. Please try again later.');}}
+            respond(['ok'=>true,'message'=>'If an account matches that username or email, a password reset link has been sent.']);
+
         case 'profile':
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') respond(['ok' => false, 'message' => 'Method not allowed.'], 405);
             $data=body();$id=customerId();

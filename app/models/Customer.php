@@ -22,7 +22,7 @@ final class Customer
         if(!preg_match('/^[a-z0-9_]{3,30}$/',$username)) throw new RuntimeException('Username must be 3–30 characters using letters, numbers, or underscores.');
         $check=$this->db->prepare('SELECT id FROM customers WHERE LOWER(email)=? OR LOWER(username)=? LIMIT 1');$check->execute([$email,$username]);
         if($check->fetch()) throw new RuntimeException('That username or email is already registered.');
-        $token=bin2hex(random_bytes(32));$statement=$this->db->prepare('INSERT INTO customers (full_name,first_name,surname,username,email,password_hash,phone,phone_country,delivery_address,country,zip_code,email_verification_token,email_verification_expires_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,DATE_ADD(NOW(),INTERVAL 1 HOUR))');
+        $token=bin2hex(random_bytes(32));$statement=$this->db->prepare('INSERT INTO customers (full_name,first_name,surname,username,email,password_hash,phone,phone_country,delivery_address,country,zip_code,email_verification_token,email_verification_expires_at,email_verification_sent_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,DATE_ADD(NOW(),INTERVAL 1 HOUR),NOW())');
         $statement->execute([$name,$firstName,$surname,$username,$email,password_hash($password,PASSWORD_DEFAULT),trim($phone),trim($phoneCountry),trim($address),trim($country),trim($zipCode),hash('sha256',$token)]);
         return ['id'=>(int)$this->db->lastInsertId(),'name'=>$name,'firstName'=>$firstName,'surname'=>$surname,'username'=>$username,'email'=>$email,'phone'=>trim($phone),'phoneCountry'=>trim($phoneCountry),'address'=>trim($address),'country'=>trim($country),'zipCode'=>trim($zipCode),'_verificationToken'=>$token];
     }
@@ -32,6 +32,28 @@ final class Customer
         if(!preg_match('/^[a-f0-9]{64}$/',$token))throw new RuntimeException('The verification link is invalid.');
         $statement=$this->db->prepare('UPDATE customers SET email_verified_at=NOW(),email_verification_token=NULL,email_verification_expires_at=NULL WHERE email_verification_token=? AND email_verified_at IS NULL AND email_verification_expires_at>=NOW()');
         $statement->execute([hash('sha256',$token)]);if($statement->rowCount()!==1)throw new RuntimeException('The verification link is invalid, expired, or was already used.');
+    }
+
+    public function prepareVerificationResend(string $identifier): ?array
+    {
+        $identifier=strtolower(trim($identifier));$statement=$this->db->prepare('SELECT * FROM customers WHERE LOWER(email)=? OR LOWER(username)=? LIMIT 1');$statement->execute([$identifier,$identifier]);$customer=$statement->fetch();
+        if(!$customer||!empty($customer['email_verified_at']))return null;
+        if(!empty($customer['email_verification_sent_at'])&&strtotime($customer['email_verification_sent_at'])>time()-60)return null;
+        $token=bin2hex(random_bytes(32));$update=$this->db->prepare('UPDATE customers SET email_verification_token=?,email_verification_expires_at=DATE_ADD(NOW(),INTERVAL 1 HOUR),email_verification_sent_at=NOW() WHERE id=?');$update->execute([hash('sha256',$token),$customer['id']]);$result=$this->publicData($customer);$result['_verificationToken']=$token;return $result;
+    }
+
+    public function preparePasswordReset(string $identifier): ?array
+    {
+        $identifier=strtolower(trim($identifier));$statement=$this->db->prepare('SELECT * FROM customers WHERE LOWER(email)=? OR LOWER(username)=? LIMIT 1');$statement->execute([$identifier,$identifier]);$customer=$statement->fetch();if(!$customer)return null;
+        if(!empty($customer['password_reset_sent_at'])&&strtotime($customer['password_reset_sent_at'])>time()-60)return null;
+        $token=bin2hex(random_bytes(32));$update=$this->db->prepare('UPDATE customers SET password_reset_token=?,password_reset_expires_at=DATE_ADD(NOW(),INTERVAL 1 HOUR),password_reset_sent_at=NOW() WHERE id=?');$update->execute([hash('sha256',$token),$customer['id']]);$result=$this->publicData($customer);$result['_resetToken']=$token;return $result;
+    }
+
+    public function resetPassword(string $token,string $password): void
+    {
+        if(!preg_match('/^[a-f0-9]{64}$/',$token))throw new RuntimeException('The password reset link is invalid.');
+        if(strlen($password)<6)throw new RuntimeException('The new password must contain at least 6 characters.');
+        $statement=$this->db->prepare('UPDATE customers SET password_hash=?,password_reset_token=NULL,password_reset_expires_at=NULL,password_reset_sent_at=NULL,email_verified_at=COALESCE(email_verified_at,NOW()) WHERE password_reset_token=? AND password_reset_expires_at>=NOW()');$statement->execute([password_hash($password,PASSWORD_DEFAULT),hash('sha256',$token)]);if($statement->rowCount()!==1)throw new RuntimeException('The password reset link is invalid, expired, or was already used.');
     }
 
     public function updateProfile(int $id, array $data): array
@@ -55,5 +77,7 @@ final class Customer
     {
         $exists=$this->db->query("SHOW COLUMNS FROM customers LIKE 'email_verified_at'")->fetch();
         if(!$exists){$this->db->exec('ALTER TABLE customers ADD email_verified_at DATETIME NULL AFTER password_hash, ADD email_verification_token CHAR(64) NULL AFTER email_verified_at, ADD email_verification_expires_at DATETIME NULL AFTER email_verification_token');$this->db->exec('UPDATE customers SET email_verified_at=NOW() WHERE email_verified_at IS NULL');}
+        if(!$this->db->query("SHOW COLUMNS FROM customers LIKE 'email_verification_sent_at'")->fetch())$this->db->exec('ALTER TABLE customers ADD email_verification_sent_at DATETIME NULL AFTER email_verification_expires_at');
+        if(!$this->db->query("SHOW COLUMNS FROM customers LIKE 'password_reset_token'")->fetch())$this->db->exec('ALTER TABLE customers ADD password_reset_token CHAR(64) NULL AFTER email_verification_sent_at, ADD password_reset_expires_at DATETIME NULL AFTER password_reset_token, ADD password_reset_sent_at DATETIME NULL AFTER password_reset_expires_at');
     }
 }

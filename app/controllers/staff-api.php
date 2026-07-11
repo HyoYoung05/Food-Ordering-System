@@ -9,6 +9,7 @@ require_once __DIR__.'/../models/StaffUser.php';
 require_once __DIR__.'/../models/AdminOrder.php';
 require_once __DIR__.'/../models/AdminProduct.php';
 require_once __DIR__.'/../services/CloudinaryUploader.php';
+require_once __DIR__.'/../services/EmailService.php';
 
 function staffRespond(array $data,int $status=200):never{http_response_code($status);echo json_encode($data,JSON_UNESCAPED_UNICODE);exit;}
 function staffBody():array{return json_decode(file_get_contents('php://input'),true)?:[];}
@@ -46,8 +47,9 @@ try{
             $data['isAvailable']=filter_var($data['isAvailable']??false,FILTER_VALIDATE_BOOLEAN);staffRespond(['ok'=>true,'product'=>(new AdminProduct($db))->save($data)]);
         case 'product-status': requireStaff();$data=staffBody();staffRespond(['ok'=>true,'product'=>(new AdminProduct($db))->setAvailability((int)($data['id']??0),(bool)($data['isAvailable']??false))]);
         case 'status':
-            $user=requireStaff();$data=staffBody();(new AdminOrder($db))->updateStatus((int)($data['orderId']??0),$data['status']??'');
-            staffRespond(['ok'=>true]+portalDashboard($db,$user));
+            $user=requireStaff();$data=staffBody();$orderId=(int)($data['orderId']??0);$status=$data['status']??'';$orders=new AdminOrder($db);$orders->updateStatus($orderId,$status);$deliveryEmailSent=null;
+            if($status==='Delivered'&&($recipient=$orders->claimDeliveryNotification($orderId))){try{(new EmailService())->sendOrderDelivered($recipient);$deliveryEmailSent=true;}catch(Throwable $mailError){$orders->releaseDeliveryNotification($orderId);$deliveryEmailSent=false;error_log('Delivered email failed: '.$mailError->getMessage());}}
+            staffRespond(['ok'=>true,'deliveryEmailSent'=>$deliveryEmailSent]+portalDashboard($db,$user));
         default: staffRespond(['ok'=>false,'message'=>'Unknown staff API action.'],404);
     }
 }catch(RuntimeException $error){staffRespond(['ok'=>false,'message'=>$error->getMessage()],400);}

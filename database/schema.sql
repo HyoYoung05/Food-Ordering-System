@@ -15,6 +15,10 @@ CREATE TABLE IF NOT EXISTS customers (
   email_verified_at DATETIME NULL,
   email_verification_token CHAR(64) NULL,
   email_verification_expires_at DATETIME NULL,
+  email_verification_sent_at DATETIME NULL,
+  password_reset_token CHAR(64) NULL,
+  password_reset_expires_at DATETIME NULL,
+  password_reset_sent_at DATETIME NULL,
   phone VARCHAR(30) NULL,
   phone_country VARCHAR(8) NULL,
   delivery_address VARCHAR(255) NULL,
@@ -36,6 +40,10 @@ ALTER TABLE customers ADD COLUMN IF NOT EXISTS zip_code VARCHAR(20) NULL AFTER c
 ALTER TABLE customers ADD COLUMN IF NOT EXISTS email_verified_at DATETIME NULL AFTER password_hash;
 ALTER TABLE customers ADD COLUMN IF NOT EXISTS email_verification_token CHAR(64) NULL AFTER email_verified_at;
 ALTER TABLE customers ADD COLUMN IF NOT EXISTS email_verification_expires_at DATETIME NULL AFTER email_verification_token;
+ALTER TABLE customers ADD COLUMN IF NOT EXISTS email_verification_sent_at DATETIME NULL AFTER email_verification_expires_at;
+ALTER TABLE customers ADD COLUMN IF NOT EXISTS password_reset_token CHAR(64) NULL AFTER email_verification_sent_at;
+ALTER TABLE customers ADD COLUMN IF NOT EXISTS password_reset_expires_at DATETIME NULL AFTER password_reset_token;
+ALTER TABLE customers ADD COLUMN IF NOT EXISTS password_reset_sent_at DATETIME NULL AFTER password_reset_expires_at;
 
 CREATE TABLE IF NOT EXISTS staff_users (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -99,8 +107,11 @@ CREATE TABLE IF NOT EXISTS orders (
   status ENUM('Order placed','Preparing','Out for delivery','Delivered','Cancelled') NOT NULL DEFAULT 'Order placed',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  delivered_email_sent_at DATETIME NULL,
   CONSTRAINT fk_order_customer FOREIGN KEY (customer_id) REFERENCES customers(id)
 ) ENGINE=InnoDB;
+
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS delivered_email_sent_at DATETIME NULL AFTER updated_at;
 
 CREATE TABLE IF NOT EXISTS order_items (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

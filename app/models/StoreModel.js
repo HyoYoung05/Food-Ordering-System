@@ -49,6 +49,14 @@ window.StoreModel = {
     return this.request('register', { method: 'POST', body: JSON.stringify(details) });
   },
 
+  resendVerification(identifier) {
+    return this.request('resend-verification', { method: 'POST', body: JSON.stringify({ identifier }) });
+  },
+
+  forgotPassword(identifier) {
+    return this.request('forgot-password', { method: 'POST', body: JSON.stringify({ identifier }) });
+  },
+
   updateProfile(details) {
     return this.request('profile', { method: 'POST', body: JSON.stringify(details) });
   },
