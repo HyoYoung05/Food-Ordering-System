@@ -33,6 +33,15 @@ try{
         case 'logout': unset($_SESSION['staff_user']);staffRespond(['ok'=>true]);
         case 'dashboard': $user=requireStaff();staffRespond(['ok'=>true]+portalDashboard($db,$user));
         case 'revenue': requireAdmin();staffRespond(['ok'=>true,'revenue'=>(new AdminOrder($db))->revenue($_GET['period']??'daily')]);
+        case 'staff-users': requireAdmin();staffRespond(['ok'=>true,'staff'=>(new StaffUser($db))->all()]);
+        case 'save-staff':
+            requireAdmin();
+            $data=staffBody();
+            staffRespond(['ok'=>true,'staffUser'=>(new StaffUser($db))->save($data)]);
+        case 'staff-status':
+            requireAdmin();
+            $data=staffBody();
+            staffRespond(['ok'=>true,'staffUser'=>(new StaffUser($db))->setStatus((int)($data['id']??0),(bool)($data['isActive']??false))]);
         case 'order-details': requireStaff();staffRespond(['ok'=>true,'details'=>(new AdminOrder($db))->details((int)($_GET['orderId']??0))]);
         case 'products': requireStaff();staffRespond(['ok'=>true,'products'=>(new AdminProduct($db))->all()]);
         case 'save-product':

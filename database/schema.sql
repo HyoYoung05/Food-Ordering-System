@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS staff_users (
   full_name VARCHAR(120) NOT NULL,
   email VARCHAR(190) NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
+  role ENUM('staff','manager') NOT NULL DEFAULT 'staff',
   is_active TINYINT(1) NOT NULL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -65,8 +66,7 @@ CREATE TABLE IF NOT EXISTS admin_users (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- Removes the legacy role field when upgrading an existing installation.
-ALTER TABLE staff_users DROP COLUMN IF EXISTS role;
+ALTER TABLE staff_users ADD COLUMN IF NOT EXISTS role ENUM('staff','manager') NOT NULL DEFAULT 'staff' AFTER password_hash;
 
 CREATE TABLE IF NOT EXISTS menu_items (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -186,7 +186,7 @@ ON DUPLICATE KEY UPDATE full_name=VALUES(full_name), is_active=1;
 
 INSERT INTO staff_users (full_name, email, password_hash) VALUES
   ('Kitchen Staff','staff@savorly.local','$2y$12$MYIocFuxq8be1Bcb8JFcEu3VSHeGd3H9xAaTgaAoRrye0flSp.Lj.')
-ON DUPLICATE KEY UPDATE full_name=VALUES(full_name), is_active=1;
+ON DUPLICATE KEY UPDATE full_name=VALUES(full_name), role='staff', is_active=1;
 
 -- Migrates installations that previously stored administrators in staff_users.
 DELETE FROM staff_users WHERE email='admin@savorly.local';

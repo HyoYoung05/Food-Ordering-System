@@ -68,7 +68,19 @@ final class AdminOrder
             $label=match($period){'daily'=>$date->format('M j'),'weekly'=>'Week '.$date->format('M j'),'monthly'=>$date->format('M Y')};
             return ['label'=>$label,'date'=>$row['period_label'],'amount'=>(float)$row['amount'],'orders'=>(int)$row['order_count']];
         },$rows);
-        return ['period'=>$period,'points'=>$points,'total'=>array_sum(array_column($points,'amount')),'orders'=>array_sum(array_column($points,'orders')),'generatedAt'=>(new DateTimeImmutable('now',new DateTimeZone('Asia/Manila')))->format(DateTimeInterface::ATOM)];
+        $detailsSql="SELECT o.order_number,o.updated_at,o.total,c.full_name AS customer,
+            GROUP_CONCAT(CONCAT(oi.quantity,' x ',oi.item_name,' @ PHP ',FORMAT(oi.unit_price,2)) ORDER BY oi.id SEPARATOR '; ') AS products
+            FROM orders o JOIN customers c ON c.id=o.customer_id JOIN order_items oi ON oi.order_id=o.id
+            WHERE o.status='Delivered' AND o.updated_at>=DATE_SUB(NOW(),INTERVAL {$setting['days']} DAY)
+            GROUP BY o.id ORDER BY o.updated_at DESC,o.id DESC";
+        $details=array_map(fn(array $row):array=>[
+            'orderNumber'=>$row['order_number'],
+            'deliveredAt'=>$row['updated_at'],
+            'customer'=>$row['customer'],
+            'products'=>$row['products'],
+            'total'=>(float)$row['total'],
+        ],$this->db->query($detailsSql)->fetchAll());
+        return ['period'=>$period,'points'=>$points,'details'=>$details,'total'=>array_sum(array_column($points,'amount')),'orders'=>array_sum(array_column($points,'orders')),'generatedAt'=>(new DateTimeImmutable('now',new DateTimeZone('Asia/Manila')))->format(DateTimeInterface::ATOM)];
     }
 
     public function details(int $orderId): array
