@@ -24,7 +24,7 @@ final class AdminOrder
         ]];
     }
 
-    public function updateStatus(int $id, string $status): void
+    public function updateStatus(int $id, string $status, array $actor): void
     {
         if (!in_array($status, self::STATUSES, true)) throw new RuntimeException('Invalid order status.');
         $this->db->beginTransaction();
@@ -33,9 +33,10 @@ final class AdminOrder
             if($current===false)throw new RuntimeException('Order not found.');
             if(in_array($current,['Delivered','Cancelled'],true))throw new RuntimeException("A {$current} order is final and its status cannot be changed.");
             if($current===$status)throw new RuntimeException('The order already has that status.');
-            $statement=$this->db->prepare('UPDATE orders SET status=? WHERE id=?'); $statement->execute([$status,$id]);
+            [$adminId,$staffId]=$this->actorIds($actor);
+            $statement=$this->db->prepare('UPDATE orders SET status=?,updated_by_admin_id=?,updated_by_staff_id=? WHERE id=?'); $statement->execute([$status,$adminId,$staffId,$id]);
             if ($statement->rowCount()===0) throw new RuntimeException('The order status could not be updated.');
-            $this->db->prepare('INSERT INTO order_status_history (order_id,status) VALUES (?,?)')->execute([$id,$status]);
+            $this->db->prepare('INSERT INTO order_status_history (order_id,status,changed_by_admin_id,changed_by_staff_id) VALUES (?,?,?,?)')->execute([$id,$status,$adminId,$staffId]);
             $this->db->commit();
         } catch (Throwable $error) { $this->db->rollBack(); throw $error; }
     }
@@ -86,5 +87,12 @@ final class AdminOrder
     private function ensureDeliveryEmailColumn(): void
     {
         if(!$this->db->query("SHOW COLUMNS FROM orders LIKE 'delivered_email_sent_at'")->fetch())$this->db->exec('ALTER TABLE orders ADD delivered_email_sent_at DATETIME NULL AFTER updated_at');
+    }
+
+    private function actorIds(array $actor): array
+    {
+        $id=(int)($actor['id']??0);$role=$actor['role']??'';
+        if($id<1||!in_array($role,['admin','staff'],true))throw new RuntimeException('Invalid staff attribution.');
+        return $role==='admin'?[$id,null]:[null,$id];
     }
 }

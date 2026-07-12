@@ -78,7 +78,18 @@ CREATE TABLE IF NOT EXISTS menu_items (
   image_path VARCHAR(255) NULL,
   badge VARCHAR(30) NULL,
   is_available TINYINT(1) NOT NULL DEFAULT 1,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_by_admin_id INT UNSIGNED NULL,
+  created_by_staff_id INT UNSIGNED NULL,
+  updated_by_admin_id INT UNSIGNED NULL,
+  updated_by_staff_id INT UNSIGNED NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_menu_created_admin FOREIGN KEY (created_by_admin_id) REFERENCES admin_users(id) ON DELETE SET NULL,
+  CONSTRAINT fk_menu_created_staff FOREIGN KEY (created_by_staff_id) REFERENCES staff_users(id) ON DELETE SET NULL,
+  CONSTRAINT fk_menu_updated_admin FOREIGN KEY (updated_by_admin_id) REFERENCES admin_users(id) ON DELETE SET NULL,
+  CONSTRAINT fk_menu_updated_staff FOREIGN KEY (updated_by_staff_id) REFERENCES staff_users(id) ON DELETE SET NULL,
+  CONSTRAINT chk_menu_created_actor CHECK (created_by_admin_id IS NULL OR created_by_staff_id IS NULL),
+  CONSTRAINT chk_menu_updated_actor CHECK (updated_by_admin_id IS NULL OR updated_by_staff_id IS NULL)
 ) ENGINE=InnoDB;
 
 ALTER TABLE menu_items DROP COLUMN IF EXISTS emoji;
@@ -106,10 +117,15 @@ CREATE TABLE IF NOT EXISTS orders (
   delivery_fee DECIMAL(10,2) NOT NULL DEFAULT 49.00,
   total DECIMAL(10,2) NOT NULL,
   status ENUM('Order placed','Preparing','Out for delivery','Delivered','Cancelled') NOT NULL DEFAULT 'Order placed',
+  updated_by_admin_id INT UNSIGNED NULL,
+  updated_by_staff_id INT UNSIGNED NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   delivered_email_sent_at DATETIME NULL,
-  CONSTRAINT fk_order_customer FOREIGN KEY (customer_id) REFERENCES customers(id)
+  CONSTRAINT fk_order_customer FOREIGN KEY (customer_id) REFERENCES customers(id),
+  CONSTRAINT fk_order_admin FOREIGN KEY (updated_by_admin_id) REFERENCES admin_users(id) ON DELETE SET NULL,
+  CONSTRAINT fk_order_staff FOREIGN KEY (updated_by_staff_id) REFERENCES staff_users(id) ON DELETE SET NULL,
+  CONSTRAINT chk_order_actor CHECK (updated_by_admin_id IS NULL OR updated_by_staff_id IS NULL)
 ) ENGINE=InnoDB;
 
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS delivered_email_sent_at DATETIME NULL AFTER updated_at;
@@ -129,8 +145,13 @@ CREATE TABLE IF NOT EXISTS order_status_history (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   order_id INT UNSIGNED NOT NULL,
   status VARCHAR(40) NOT NULL,
+  changed_by_admin_id INT UNSIGNED NULL,
+  changed_by_staff_id INT UNSIGNED NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_history_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+  CONSTRAINT fk_history_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+  CONSTRAINT fk_history_admin FOREIGN KEY (changed_by_admin_id) REFERENCES admin_users(id) ON DELETE SET NULL,
+  CONSTRAINT fk_history_staff FOREIGN KEY (changed_by_staff_id) REFERENCES staff_users(id) ON DELETE SET NULL,
+  CONSTRAINT chk_history_actor CHECK (changed_by_admin_id IS NULL OR changed_by_staff_id IS NULL)
 ) ENGINE=InnoDB;
 
 INSERT INTO menu_items (id, name, category, description, price, color, badge) VALUES
